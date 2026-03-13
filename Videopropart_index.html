@@ -327,15 +327,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020609;font-family:
         </ul>
       </div>
       <div class="split-right" style="display:flex;flex-direction:column;gap:10px">
-        <div class="dtc-card" style="animation-delay:.3s">
+        <div class="dtc-card" style="animation-delay:.30s">
           <div class="dtc-code">P0101</div>
           <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">MAF Fuera de Rango</div><div style="font-size:11px;color:#6880A0">¿Cable verde/blanco o verde? ¿Gap de voltaje?</div></div>
         </div>
-        <div class="dtc-card" style="animation-delay:.5s">
+        <div class="dtc-card" style="animation-delay:.05s">
           <div class="dtc-code">P0335</div>
           <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">CKP Sin Señal</div><div style="font-size:11px;color:#6880A0">¿Am/V o amarillo sólido? ¿Resistencia?</div></div>
         </div>
-        <div class="dtc-card" style="animation-delay:.7s">
+        <div class="dtc-card" style="animation-delay:.07s">
           <div class="dtc-code">P0420</div>
           <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">Catalizador Degradado</div><div style="font-size:11px;color:#6880A0">¿O2 N/Am o naranja? ¿Voltaje límite?</div></div>
         </div>
@@ -590,7 +590,7 @@ const TIMING=[45000,60000,50000,6000,6500,5500,60000,0]; // ms per slide
 function showSlide(n){
   slides[current].classList.remove('active');
   slides[current].classList.add('out');
-  setTimeout(()=>{slides[current].classList.remove('out'),600 ms)};,
+  setTimeout(()=>{slides[current].classList.remove('out'),600)};
   current=n;
   // Clone node to retrigger CSS animations
   const old=slides[current];
