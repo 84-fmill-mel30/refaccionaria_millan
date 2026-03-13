@@ -614,7 +614,7 @@ function nextSlide(){
 let timer=null;
 function scheduleNext(){
   clearTimeout(timer);
-  const t=TIMING[current];
+  const t=TIMING[current=[400,600,500,600,650,550,600,0,0];
   if(t>0) timer=setTimeout(()=>{nextSlide();scheduleNext();},t);
 }
 scheduleNext();
