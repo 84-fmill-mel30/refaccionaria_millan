@@ -614,13 +614,13 @@ function nextSlide(){
 let timer=null;
 function scheduleNext(){
   clearTimeout(timer);
-  const t=TIMING[current=[400,600,500,600,650,550,600,0,0];
+  const t=TIMING[current]
   if(t>0) timer=setTimeout(()=>{nextSlide();scheduleNext();},t);
 }
 scheduleNext();
 
 // ── KEYBOARD ──
-document.addEventListener('keydown',e=>{
+document.addEventListener('keydown',e=>{ 
   if(e.key==='ArrowRight'||e.key===' '){nextSlide();scheduleNext();}
   if(e.key==='ArrowLeft'&&current>0){showSlide(current-1);scheduleNext();}
 });
