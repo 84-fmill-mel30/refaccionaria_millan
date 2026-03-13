@@ -1,152 +1,636 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProPart System V7 — Spot Publicitario</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { width: 100%; height: 100vh; overflow: hidden; background: #020609; font-family: 'Barlow Condensed', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProPart System V7 — Spot Publicitario</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:#020609;font-family:'Barlow Condensed',sans-serif;}
 
-        /* ── ESCENARIO ── */
-        #stage { width: 100%; height: 100%; position: relative; overflow: hidden; }
+/* ── STAGE ── */
+#stage{
+  width:100%;height:100vh;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 60% 40%,#0A1830 0%,#020609 70%);
+}
 
-        .bg-grid {
-            position: absolute; inset: 0;
-            background-image: linear-gradient(rgba(245,166,35,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(245,166,35,.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
+/* ── GRID BACKGROUND ── */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(245,166,35,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(245,166,35,.04) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridShift 20s linear infinite;
+}
+@keyframes gridShift{to{background-position:50px 50px;}}
 
-        /* ── SISTEMA DE SLIDES (CAPAS) ── */
-        .slide {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden;
-            transform: scale(1.1);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 5; padding: 40px; text-align: center;
-        }
+/* ── SCANLINES ── */
+.scanlines{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
+}
 
-        /* Pantalla Activa */
-        .slide.active {
-            opacity: 1; visibility: visible;
-            transform: scale(1);
-            z-index: 10;
-        }
+/* ── PARTICLES ── */
+.particle{
+  position:absolute;border-radius:50%;pointer-events:none;
+  animation:float linear infinite;
+}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
 
-        /* Pantalla que se va */
-        .slide.out {
-            opacity: 0; visibility: hidden;
-            transform: scale(0.9);
-            z-index: 1;
-        }
+/* ── SLIDE SYSTEM ── */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;transform:scale(.97);
+  transition:opacity .6s ease,transform .6s ease;
+  z-index:5;padding:40px;
+}
+.slide.active{opacity:1;transform:scale(1);}
+.slide.out{opacity:0;transform:scale(1.03);}
 
-        /* ── DISEÑO DE TEXTOS ── */
-        .brand { font-size: 70px; font-weight: 900; color: #F5A623; letter-spacing: 10px; text-shadow: 0 0 30px rgba(245, 166, 35, 0.5); }
-        .tagline { color: #00D4FF; font-size: 20px; letter-spacing: 5px; }
-        .feat-title { font-size: 50px; color: white; text-transform: uppercase; margin: 20px 0; }
-        .gold { color: #F5A623; }
+/* ── SLIDE 1 — LOGO INTRO ── */
+#s1 .logo-ring{
+  width:180px;height:180px;border-radius:50%;
+  border:2px solid rgba(245,166,35,.2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;margin-bottom:40px;
+}
+#s1 .logo-ring::before{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:3px solid transparent;
+  border-top-color:#F5A623;border-right-color:#F5A623;
+  animation:spin2 1.5s linear infinite;
+}
+#s1 .logo-ring::after{
+  content:'';position:absolute;inset:15px;border-radius:50%;
+  border:1px solid rgba(245,166,35,.1);
+}
+@keyframes spin2{to{transform:rotate(360deg);}}
+#s1 .pp{font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:#F5A623;}
+#s1 .brand{font-size:56px;font-weight:900;letter-spacing:12px;color:#F5A623;text-transform:uppercase;margin-bottom:8px;}
+#s1 .tagline{font-size:16px;font-weight:300;color:#6880A0;letter-spacing:6px;text-transform:uppercase;}
+#s1 .flag{font-size:36px;margin-top:16px;}
+#s1 .ver{font-size:13px;font-family:'Share Tech Mono',monospace;color:#344870;margin-top:8px;letter-spacing:3px;}
 
-        /* ── VIDEO / IMAGEN DE FONDO ── */
-        .media-bg {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.2; z-index: -1;
-        }
+/* ── TEXT EFFECTS ── */
+.glow-text{text-shadow:0 0 30px rgba(245,166,35,.5),0 0 60px rgba(245,166,35,.2);}
+.cyan-text{color:#00D4FF;text-shadow:0 0 20px rgba(0,212,255,.4);}
+.gold-text{color:#F5A623;}
+.red-text{color:#FF3D5A;}
+.line-reveal{overflow:hidden;}
+.line-reveal span{display:inline-block;transform:translateY(100%);animation:lineUp .6s ease forwards;}
+@keyframes lineUp{to{transform:translateY(0);}}
 
-        /* ── UI ── */
-        #progress-bar { position: fixed; bottom: 0; left: 0; height: 4px; background: #F5A623; transition: width 0.4s; z-index: 100; }
-        #skip-btn { position: fixed; bottom: 20px; right: 20px; background: rgba(245,166,35,0.2); color: white; border: 1px solid #F5A623; padding: 10px 20px; cursor: pointer; border-radius: 5px; z-index: 100; }
-    </style>
+/* ── FEATURE SLIDES ── */
+.feat-badge{
+  font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;
+  color:#F5A623;border:1px solid rgba(245,166,35,.3);
+  padding:6px 16px;border-radius:20px;
+  background:rgba(245,166,35,.06);
+  margin-bottom:20px;display:inline-block;
+}
+.feat-title{font-size:64px;font-weight:900;line-height:.95;text-transform:uppercase;margin-bottom:16px;}
+.feat-sub{font-size:18px;font-weight:300;color:#7090B0;letter-spacing:2px;margin-bottom:32px;}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.feat-list li{
+  font-size:20px;font-weight:400;color:#A0BCD8;
+  display:flex;align-items:center;gap:14px;
+  transform:translateX(-30px);opacity:0;
+  animation:slideIn .4s ease forwards;
+}
+.feat-list li::before{content:'⬡';color:#F5A623;font-size:14px;flex-shrink:0;}
+@keyframes slideIn{to{transform:translateX(0);opacity:1;}}
+.feat-list li:nth-child(1){animation-delay:.2s;}
+.feat-list li:nth-child(2){animation-delay:.35s;}
+.feat-list li:nth-child(3){animation-delay:.5s;}
+.feat-list li:nth-child(4){animation-delay:.65s;}
+.feat-list li:nth-child(5){animation-delay:.8s;}
+
+/* ── SCREEN MOCKUP ── */
+.mockup{
+  width:340px;height:220px;
+  background:#040C18;
+  border:2px solid rgba(245,166,35,.3);
+  border-radius:12px;
+  overflow:hidden;position:relative;
+  box-shadow:0 0 60px rgba(245,166,35,.15),0 0 120px rgba(0,0,0,.5);
+  flex-shrink:0;
+}
+.mockup-bar{
+  height:28px;background:rgba(245,166,35,.08);
+  border-bottom:1px solid rgba(245,166,35,.15);
+  display:flex;align-items:center;padding:0 10px;gap:6px;
+}
+.mb-dot{width:7px;height:7px;border-radius:50%;}
+.mockup-content{padding:10px;display:flex;flex-direction:column;gap:6px;}
+.mc-row{height:6px;border-radius:3px;background:rgba(245,166,35,.15);animation:mcPulse 2s ease infinite;}
+.mc-row.cyan{background:rgba(0,212,255,.2);animation-delay:.3s;}
+.mc-row.green{background:rgba(0,230,118,.2);animation-delay:.6s;}
+@keyframes mcPulse{0%,100%{opacity:.5}50%{opacity:1;}}
+
+/* ── SPLIT LAYOUT ── */
+.split{display:flex;gap:60px;align-items:center;max-width:1000px;width:100%;}
+.split-left,.split-right{flex:1;}
+
+/* ── GAUGE VISUAL ── */
+.gauge-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.gauge-mini{
+  width:80px;text-align:center;
+  background:rgba(10,20,34,.8);border:1px solid rgba(30,48,88,.8);
+  border-radius:8px;padding:8px 4px;
+}
+.gauge-val{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;}
+.gauge-lbl{font-size:8px;letter-spacing:1px;color:#6880A0;margin-top:2px;}
+
+/* ── DTC CARD ── */
+.dtc-card{
+  background:rgba(255,61,90,.06);border:1px solid rgba(255,61,90,.25);
+  border-radius:8px;padding:12px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+  transform:translateX(-20px);opacity:0;
+  animation:slideIn .4s ease forwards;
+}
+.dtc-code{font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;color:#FF3D5A;}
+
+/* ── CHALAN VISUAL ── */
+.chalan-viz{
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,rgba(245,166,35,.15),rgba(0,212,255,.08),transparent 70%);
+  border:2px solid rgba(245,166,35,.3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  animation:chalanFloat 3s ease infinite;
+}
+@keyframes chalanFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.chalan-viz::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid transparent;border-top-color:rgba(245,166,35,.3);
+  animation:spin2 4s linear infinite;
+}
+.chalan-viz::after{
+  content:'';position:absolute;inset:-20px;border-radius:50%;
+  border:1px solid transparent;border-right-color:rgba(0,212,255,.2);
+  animation:spin2 8s linear infinite reverse;
+}
+.chalan-emoji{font-size:72px;}
+
+/* ── VOICE WAVE ── */
+.voice-wave{display:flex;gap:4px;align-items:center;margin-top:20px;}
+.vbar{width:4px;border-radius:2px;background:#F5A623;animation:vwave .5s ease infinite alternate;}
+.vbar:nth-child(1){height:12px;animation-delay:0s;}
+.vbar:nth-child(2){height:24px;animation-delay:.07s;}
+.vbar:nth-child(3){height:36px;animation-delay:.14s;}
+.vbar:nth-child(4){height:28px;animation-delay:.21s;}
+.vbar:nth-child(5){height:16px;animation-delay:.28s;}
+.vbar:nth-child(6){height:32px;animation-delay:.35s;}
+.vbar:nth-child(7){height:20px;animation-delay:.42s;}
+@keyframes vwave{to{opacity:.3;transform:scaleY(.4);}}
+
+/* ── BRANDS VISUAL ── */
+.brands-showcase{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.bs-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 20px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.02);
+  transform:translateY(20px);opacity:0;
+  animation:slideUp .4s ease forwards;
+}
+.bs-item:nth-child(1){animation-delay:.1s;}
+.bs-item:nth-child(2){animation-delay:.2s;}
+.bs-item:nth-child(3){animation-delay:.3s;}
+.bs-item:nth-child(4){animation-delay:.4s;}
+.bs-item:nth-child(5){animation-delay:.5s;}
+.bs-item:nth-child(6){animation-delay:.6s;}
+@keyframes slideUp{to{transform:translateY(0);opacity:1;}}
+.bs-name{font-size:11px;letter-spacing:2px;font-weight:700;color:#6880A0;}
+
+/* ── CTA FINAL ── */
+#s8{text-align:center;}
+.cta-price{
+  font-size:80px;font-weight:900;
+  background:linear-gradient(135deg,#F5A623,#FFD080,#F5A623);
+  background-clip:text;-webkit-background-clip:text;color:transparent;
+  animation:shimmer 2s linear infinite;
+  background-size:200%;
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%;}}
+.cta-sub{font-size:18px;color:#6880A0;letter-spacing:3px;margin-bottom:40px;}
+.cta-btn{
+  display:inline-block;padding:18px 48px;
+  background:linear-gradient(135deg,#F5A623,#C47008);
+  color:#000;font-size:20px;font-weight:900;letter-spacing:3px;
+  border-radius:50px;cursor:pointer;
+  box-shadow:0 0 40px rgba(245,166,35,.4);
+  animation:ctaBounce 2s ease infinite;
+  text-transform:uppercase;
+}
+@keyframes ctaBounce{0%,100%{transform:scale(1);}50%{transform:scale(1.04);box-shadow:0 0 60px rgba(245,166,35,.6);}}
+.contact-bar{
+  display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;justify-content:center;
+}
+.contact-item{
+  font-size:15px;color:#4A6480;letter-spacing:1px;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ── PROGRESS BAR ── */
+#progress{
+  position:fixed;bottom:0;left:0;height:3px;
+  background:linear-gradient(90deg,#F5A623,#00D4FF);
+  box-shadow:0 0 10px rgba(245,166,35,.5);
+  transition:width .3s ease;z-index:100;
+}
+#slide-counter{
+  position:fixed;bottom:12px;right:20px;z-index:100;
+  font-family:'Share Tech Mono',monospace;font-size:11px;color:#344870;
+  letter-spacing:2px;
+}
+#skip-btn{
+  position:fixed;bottom:10px;left:20px;z-index:100;
+  font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;
+  color:#344870;cursor:pointer;padding:4px 10px;
+  border:1px solid #1E3058;border-radius:20px;background:transparent;
+  transition:all .15s;
+}
+#skip-btn:hover{color:#F5A623;border-color:#F5A623;}
+
+/* ── CERT BADGE ── */
+.cert{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 20px;border-radius:40px;
+  border:1px solid rgba(0,230,118,.3);
+  background:rgba(0,230,118,.05);
+  font-size:13px;color:#00E676;letter-spacing:1px;
+  margin:6px;
+}
+
+/* ── BIG STAT ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:700px;width:100%;margin-top:20px;}
+.stat-box{
+  background:rgba(10,20,34,.8);border:1px solid rgba(30,48,88,.8);
+  border-radius:12px;padding:20px;text-align:center;
+  transform:translateY(20px);opacity:0;
+  animation:slideUp .4s ease forwards;
+}
+.stat-box:nth-child(1){animation-delay:.2s;}
+.stat-box:nth-child(2){animation-delay:.35s;}
+.stat-box:nth-child(3){animation-delay:.5s;}
+.stat-num{font-size:44px;font-weight:900;color:#F5A623;font-family:'Share Tech Mono',monospace;line-height:1;}
+.stat-unit{font-size:13px;color:#6880A0;letter-spacing:2px;margin-top:4px;}
+
+/* ── WIRE TABLE ── */
+.wire-row{
+  display:flex;align-items:center;gap:14px;
+  padding:8px 12px;border-bottom:1px solid rgba(30,48,88,.5);
+  transform:translateX(-20px);opacity:0;animation:slideIn .35s ease forwards;
+}
+.wire-swatch{width:32px;height:8px;border-radius:4px;flex-shrink:0;position:relative;}
+.wire-swatch::after{content:'';position:absolute;top:1px;left:0;right:0;height:2px;border-radius:2px;}
+.wire-label{font-family:'Share Tech Mono',monospace;font-size:13px;color:#A0BCD8;flex:1;}
+.wire-val{font-size:11px;color:#6880A0;}
+</style>
 </head>
 <body>
+<div id="stage">
+  <div class="bg-grid"></div>
+  <div class="scanlines"></div>
+  <div id="particles"></div>
 
-    <audio id="bgMusic" loop>
-        <source src="TU_AUDIO.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="stage">
-        <div class="bg-grid"></div>
-
-        <div class="slide" id="s1">
-            <div class="brand">PROPART</div>
-            <div class="tagline">SYSTEM V7</div>
-            <p style="color: #6880A0; margin-top: 20px;">DIAGNÓSTICO PROFESIONAL</p>
-        </div>
-
-        <div class="slide" id="s2">
-            <div class="feat-title">¿CUÁNTO CUESTA <span style="color:#FF3D5A">NO SABER?</span></div>
-            <p style="color: #A0BCD8; font-size: 24px;">Pérdida de clientes y horas de trabajo desperdiciadas.</p>
-        </div>
-
-        <div class="slide" id="s3">
-            <video class="media-bg" autoplay muted loop playsinline>
-                <source src="TU_VIDEO.mp4" type="video/mp4">
-            </video>
-            <div class="feat-title">LA SOLUCIÓN <span class="gold">TOTAL</span></div>
-            <p style="color: #A0BCD8; font-size: 24px;">Base de datos OEM y Chalán IA en tu bolsillo.</p>
-        </div>
-
-        <div class="slide" id="s4">
-            <div class="brand" style="font-size: 50px;">CONTACTA AHORA</div>
-            <div class="tagline" style="font-size: 30px; margin: 20px 0;">777-683-8196</div>
-            <div style="background: #F5A623; color: black; padding: 15px 30px; font-weight: 900; display: inline-block; border-radius: 50px;">ALPUYECA, MORELOS</div>
-        </div>
+  <!-- SLIDE 1: LOGO INTRO -->
+  <div class="slide active" id="s1">
+    <div class="logo-ring">
+      <div class="pp">PP</div>
     </div>
+    <div class="brand glow-text">PROPART</div>
+    <div class="tagline">SYSTEM V7</div>
+    <div class="flag">🇲🇽</div>
+    <div class="ver">DIAGNÓSTICO AUTOMOTRIZ PROFESIONAL</div>
+  </div>
 
-    <div id="progress-bar" style="width: 0%;"></div>
-    <button id="skip-btn" onclick="nextSlide()">SIGUIENTE →</button>
+  <!-- SLIDE 2: PROBLEMA -->
+  <div class="slide" id="s2">
+    <div class="split">
+      <div class="split-left">
+        <div class="feat-badge">EL PROBLEMA</div>
+        <div class="feat-title" style="color:#FF3D5A">¿Cuánto<br><span style="color:white">cuesta</span><br>no saber?</div>
+        <div class="feat-sub">Cada falla no detectada a tiempo cuesta</div>
+        <ul class="feat-list">
+          <li>Diagnósticos incorrectos = clientes perdidos</li>
+          <li>Horas buscando información dispersa</li>
+          <li>Fallas intermitentes que nadie encuentra</li>
+          <li>Accidentes por problemas no detectados</li>
+        </ul>
+      </div>
+      <div class="split-right" style="display:flex;flex-direction:column;gap:10px">
+        <div class="dtc-card" style="animation-delay:.3s">
+          <div class="dtc-code">P0101</div>
+          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">MAF Fuera de Rango</div><div style="font-size:11px;color:#6880A0">¿Cable verde/blanco o verde? ¿Gap de voltaje?</div></div>
+        </div>
+        <div class="dtc-card" style="animation-delay:.5s">
+          <div class="dtc-code">P0335</div>
+          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">CKP Sin Señal</div><div style="font-size:11px;color:#6880A0">¿Am/V o amarillo sólido? ¿Resistencia?</div></div>
+        </div>
+        <div class="dtc-card" style="animation-delay:.7s">
+          <div class="dtc-code">P0420</div>
+          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">Catalizador Degradado</div><div style="font-size:11px;color:#6880A0">¿O2 N/Am o naranja? ¿Voltaje límite?</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        let current = 0;
-        const slides = document.querySelectorAll('.slide');
-        const TIMING = [4000, 5000, 5000, 8000]; // Duración por slide
-        let timer;
+  <!-- SLIDE 3: LA SOLUCIÓN -->
+  <div class="slide" id="s3">
+    <div class="feat-badge">LA SOLUCIÓN</div>
+    <div class="feat-title glow-text" style="font-size:76px;text-align:center">
+      TODO EL TALLER<br>
+      <span class="cyan-text">EN UN</span> CELULAR
+    </div>
+    <div class="feat-sub" style="text-align:center;font-size:20px">Base de datos técnica completa · BLE nativo · IA predictiva</div>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-num">26</div>
+        <div class="stat-unit">HOJAS DB</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">6+</div>
+        <div class="stat-unit">MARCAS OEM</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-unit">OFFLINE</div>
+      </div>
+    </div>
+  </div>
 
-        function showSlide(n) {
-            // Limpiar estados
-            slides.forEach(s => {
-                s.classList.remove('active');
-                s.classList.remove('out');
-            });
+  <!-- SLIDE 4: COLORES REALES DE CABLE -->
+  <div class="slide" id="s4">
+    <div class="split">
+      <div class="split-left">
+        <div class="feat-badge">PRECISIÓN OEM</div>
+        <div class="feat-title" style="font-size:52px">Colores<br><span class="gold-text">exactos</span><br>del FSM</div>
+        <div class="feat-sub">Cada color verificado contra el manual de fábrica</div>
+      </div>
+      <div class="split-right">
+        <div style="background:rgba(4,12,24,.9);border:1px solid rgba(30,48,88,.8);border-radius:12px;padding:16px;font-size:11px;color:#344870;font-family:'Share Tech Mono',monospace;margin-bottom:12px">
+          // Nissan GA16DE — FSM EF Section
+        </div>
+        <div class="wire-row" style="animation-delay:.2s">
+          <div class="wire-swatch" style="background:#333333;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:white;border-radius:2px;opacity:.7"></div></div>
+          <div class="wire-label">INJ#1 — N/Bl</div>
+          <div class="wire-val">12V→0V Low Side</div>
+        </div>
+        <div class="wire-row" style="animation-delay:.35s">
+          <div class="wire-swatch" style="background:#BBAA00;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#117722;border-radius:2px;opacity:.9"></div></div>
+          <div class="wire-label">CKP NE+ — Am/V</div>
+          <div class="wire-val">AC 1-40Vpp sinusoidal</div>
+        </div>
+        <div class="wire-row" style="animation-delay:.5s">
+          <div class="wire-swatch" style="background:#228833;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:white;border-radius:2px;opacity:.6"></div></div>
+          <div class="wire-label">MAF VG — V/Bl</div>
+          <div class="wire-val">0.8V ralentí / 4.0V WOT</div>
+        </div>
+        <div class="wire-row" style="animation-delay:.65s">
+          <div class="wire-swatch" style="background:#2A2A00;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#CCAA00;border-radius:2px;opacity:.8"></div></div>
+          <div class="wire-label">O2 señal — N/Am</div>
+          <div class="wire-val">0.1-0.9V lambda cíclico</div>
+        </div>
+        <div class="wire-row" style="animation-delay:.8s">
+          <div class="wire-swatch" style="background:#551111;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#AA0000;border-radius:2px;opacity:.5"></div></div>
+          <div class="wire-label">IGT — N/R</div>
+          <div class="wire-val">5V→0V pulso dwell 2ms</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            // La anterior sale
-            if (slides[current]) {
-                slides[current].classList.add('out');
-            }
+  <!-- SLIDE 5: CHALÁN IA -->
+  <div class="slide" id="s5">
+    <div class="split">
+      <div class="split-left" style="text-align:center">
+        <div class="chalan-viz">
+          <div class="chalan-emoji">🤖</div>
+        </div>
+        <div class="voice-wave" style="justify-content:center">
+          <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+          <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+          <div class="vbar"></div>
+        </div>
+        <div style="font-size:13px;color:#6880A0;letter-spacing:2px;margin-top:12px">ESCUCHANDO…</div>
+      </div>
+      <div class="split-right">
+        <div class="feat-badge">CHALÁN — IA DE VOZ</div>
+        <div class="feat-title" style="font-size:52px">Tu asistente<br><span class="gold-text">en el taller</span></div>
+        <div style="background:rgba(10,20,34,.9);border:1px solid rgba(30,48,88,.8);border-radius:12px;padding:16px;margin-bottom:16px">
+          <div style="font-size:13px;color:#6880A0;margin-bottom:8px">— Chalán, ¿qué cable es el de señal del MAF?</div>
+          <div style="font-size:14px;color:#D0E4F5;line-height:1.5">
+            <span style="color:#F5A623">Chalán:</span> Es el <strong style="color:#228833">Verde/Blanco (V/Bl)</strong>, el más delgado del conector del MAF. Debe tener 0.8V en ralentí, ingeniero. ¿Lo activo en el visualizer para que lo vea?
+          </div>
+        </div>
+        <ul class="feat-list">
+          <li>Habla en voz o escribe en español</li>
+          <li>Activa la cámara para ver lo que tú ves</li>
+          <li>Identifica cables por cámara en tiempo real</li>
+          <li>Conectado a la DB técnica completa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-            // La nueva entra
-            current = n;
-            slides[current].classList.add('active');
+  <!-- SLIDE 6: PULSAR PREDICTIVO -->
+  <div class="slide" id="s6">
+    <div class="feat-badge">EXCLUSIVO ProPart</div>
+    <div class="feat-title glow-text" style="font-size:68px;text-align:center;margin-bottom:8px">
+      PULSAR<br><span class="cyan-text">PREDICTIVO</span>
+    </div>
+    <div class="feat-sub" style="text-align:center">Detecta fallas <strong style="color:white">antes</strong> de que ocurran</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px">
+      <div style="flex:1;min-width:220px;background:rgba(255,61,90,.06);border:1px solid rgba(255,61,90,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .2s ease forwards">
+        <div style="font-size:32px;margin-bottom:8px">⚠️</div>
+        <div style="font-size:15px;font-weight:700;color:#FF3D5A;margin-bottom:6px">MAF fallará en ~300km</div>
+        <div style="font-size:12px;color:#6880A0">Fluctuación anómala detectada. Preventivo: $200 vs reparación $1,800</div>
+      </div>
+      <div style="flex:1;min-width:220px;background:rgba(255,140,0,.06);border:1px solid rgba(255,140,0,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .4s ease forwards">
+        <div style="font-size:32px;margin-bottom:8px">🔋</div>
+        <div style="font-size:15px;font-weight:700;color:#FF8C00;margin-bottom:6px">Batería en degradación</div>
+        <div style="font-size:12px;color:#6880A0">Voltaje bajo carga cayendo. Preventivo: $800 vs quedarse tirado: Priceless</div>
+      </div>
+      <div style="flex:1;min-width:220px;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .6s ease forwards">
+        <div style="font-size:32px;margin-bottom:8px">⚡</div>
+        <div style="font-size:15px;font-weight:700;color:#F5A623;margin-bottom:6px">Banda accesorios</div>
+        <div style="font-size:12px;color:#6880A0">Patrón de deslizamiento. Preventivo: $380 vs falla en carretera: +$3,000</div>
+      </div>
+    </div>
+  </div>
 
-            // Actualizar UI
-            document.getElementById('progress-bar').style.width = ((current + 1) / slides.length * 100) + "%";
+  <!-- SLIDE 7: MARCAS Y DIESEL -->
+  <div class="slide" id="s7">
+    <div class="feat-badge">COBERTURA MULTIMARCA</div>
+    <div class="feat-title" style="font-size:60px;text-align:center;margin-bottom:24px">
+      Gasolina · <span class="gold-text">Diesel</span> · EV<br>
+      <span style="font-size:40px;color:#7090B0;font-weight:400">1986 — 2025</span>
+    </div>
+    <div class="brands-showcase">
+      <div class="bs-item">
+        <svg viewBox="0 0 80 40" width="70" height="35">
+          <ellipse cx="40" cy="20" rx="36" ry="14" fill="none" stroke="#C3002F" stroke-width="2.5"/>
+          <rect x="4" y="16" width="72" height="8" fill="#C3002F"/>
+          <text x="40" y="23" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="8" fill="white" letter-spacing="1.5">NISSAN</text>
+        </svg>
+        <div class="bs-name">NISSAN</div>
+      </div>
+      <div class="bs-item">
+        <svg viewBox="0 0 60 60" width="44" height="44">
+          <circle cx="30" cy="30" r="28" fill="#001E62"/>
+          <circle cx="30" cy="30" r="22" fill="none" stroke="white" stroke-width="2"/>
+          <text x="30" y="26" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="14" fill="white">V</text>
+          <text x="30" y="44" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="14" fill="white">W</text>
+        </svg>
+        <div class="bs-name">VW</div>
+      </div>
+      <div class="bs-item">
+        <svg viewBox="0 0 80 40" width="70" height="35">
+          <polygon points="8,8 30,8 30,18 18,18 18,22 30,22 30,32 8,32 8,22 20,22 20,18 8,18" fill="#D4A017"/>
+          <polygon points="50,8 72,8 72,18 60,18 60,22 72,22 72,32 50,32 50,22 62,22 62,18 50,18" fill="#D4A017"/>
+        </svg>
+        <div class="bs-name">CHEVY</div>
+      </div>
+      <div class="bs-item">
+        <svg viewBox="0 0 80 38" width="70" height="33">
+          <ellipse cx="40" cy="19" rx="36" ry="16" fill="#003476"/>
+          <text x="40" y="25" text-anchor="middle" font-family="Times New Roman" font-style="italic" font-weight="bold" font-size="18" fill="white">Ford</text>
+        </svg>
+        <div class="bs-name">FORD</div>
+      </div>
+      <div class="bs-item">
+        <svg viewBox="0 0 60 50" width="50" height="42">
+          <ellipse cx="30" cy="25" rx="18" ry="12" fill="none" stroke="#EB0A1E" stroke-width="4"/>
+          <ellipse cx="30" cy="25" rx="28" ry="9" fill="none" stroke="#EB0A1E" stroke-width="4"/>
+          <line x1="30" y1="2" x2="30" y2="48" stroke="#EB0A1E" stroke-width="2.5"/>
+        </svg>
+        <div class="bs-name">TOYOTA</div>
+      </div>
+      <div class="bs-item">
+        <svg viewBox="0 0 60 46" width="50" height="38">
+          <path d="M6,6 L6,40 L16,40 L16,28 L44,28 L44,40 L54,40 L54,6 L44,6 L44,22 L16,22 L16,6 Z" fill="#CC0000"/>
+        </svg>
+        <div class="bs-name">HONDA</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:24px">
+      <div class="cert">🛢️ EGR/Common Rail/DPF</div>
+      <div class="cert">⚡ CAN/OBD2/K-Line</div>
+      <div class="cert">🔑 IMMO/Transponders</div>
+      <div class="cert">💾 Flash ECU/Seed-Key</div>
+    </div>
+  </div>
 
-            // Programar siguiente
-            resetTimer();
-        }
+  <!-- SLIDE 8: CTA -->
+  <div class="slide" id="s8">
+    <div class="feat-badge">🇲🇽 HECHO EN ALPUYECA, MORELOS · ProPart System V12</div>
+    <div class="cta-price">PROPART V7</div>
+    <div class="cta-sub">La herramienta que su taller necesita</div>
+    <div class="cta-btn" onclick="window.open('https://wa.me/527776838196?text=Hola, me interesa ProPart V7')">
+      📱 CONTACTAR AHORA
+    </div>
+    <div class="contact-bar">
+      <div class="contact-item">📱 777-683-8196</div>
+      <div class="contact-item">📧 FM095329@gmail.com</div>
+      <div class="contact-item">🌐 ProPart System V12</div>
+    </div>
+    <div style="margin-top:32px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
+      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
+        <div style="font-size:26px;font-weight:900;color:#00E676;font-family:'Share Tech Mono'">GRATIS</div>
+        <div>Básico para siempre</div>
+      </div>
+      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
+        <div style="font-size:26px;font-weight:900;color:#F5A623;font-family:'Share Tech Mono'">$599</div>
+        <div>Plan Pro / mes</div>
+      </div>
+      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
+        <div style="font-size:26px;font-weight:900;color:#9C59F7;font-family:'Share Tech Mono'">$1,199</div>
+        <div>Plan Master / mes</div>
+      </div>
+    </div>
+  </div>
 
-        function nextSlide() {
-            // Activar audio
-            const audio = document.getElementById('bgMusic');
-            if(audio.paused) audio.play().catch(e => {});
+</div><!-- /stage -->
 
-            let next = (current + 1) % slides.length;
-            showSlide(next);
-        }
+<div id="progress" style="width:0%"></div>
+<div id="slide-counter">01 / 08</div>
+<button id="skip-btn" onclick="nextSlide()">SIGUIENTE →</button>
 
-        function resetTimer() {
-            clearTimeout(timer);
-            if (TIMING[current] > 0) {
-                timer = setTimeout(nextSlide, TIMING[current]);
-            }
-        }
+<script>
+// ── PARTICLES ──
+const stage=document.getElementById('particles');
+for(let i=0;i<25;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=Math.random()*3+1;
+  p.style.cssText=`
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    background:${Math.random()>.7?'#F5A623':'#00D4FF'};
+    opacity:${Math.random()*.4+.1};
+    animation-duration:${8+Math.random()*12}s;
+    animation-delay:${Math.random()*8}s;
+  `;
+  stage.appendChild(p);
+}
 
-        // Iniciar
-        window.onload = () => {
-            showSlide(0);
-        };
-    </script>
+// ── SLIDE ENGINE ──
+const slides=document.querySelectorAll('.slide');
+let current=0;
+const TIMING = [4500, 6000, 7500, 6000, 5500, 5500, 6000, 0];
+function showSlide(n){
+  slides[current].classList.remove('active');
+  slides[current].classList.add('out');
+  setTimeout(()=>slides[current].classList.remove('out'),400);
+  current=n;
+  // Clone node to retrigger CSS animations
+  const old=slides[current];
+  const fresh=old.cloneNode(true);
+  fresh.classList.add('active');
+  old.parentNode.replaceChild(fresh,old);
+  // Reattach slides reference
+  document.querySelectorAll('.slide')[current].classList.add('active');
+  // Update counter
+  document.getElementById('slide-counter').textContent=
+    String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  // Update progress
+  document.getElementById('progress').style.width=((current+1)/slides.length*100)+'%';
+}
+
+function nextSlide(){
+  if(current>=slides.length-1){showSlide(0);return;}
+  showSlide(current+1);
+}
+
+let timer=null;
+function scheduleNext(){
+  clearTimeout(timer);
+  const t=TIMING[current];
+  if(t>0) timer=setTimeout(()=>{nextSlide();scheduleNext();},t);
+}
+scheduleNext();
+
+// ── KEYBOARD ──
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){nextSlide();scheduleNext();}
+  if(e.key==='ArrowLeft'&&current>0){showSlide(current-1);scheduleNext();}
+});
+
+// ── TOUCH ──
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){if(dx<0)nextSlide();else if(current>0)showSlide(current-1);scheduleNext();}
+});
+</script>
 </body>
 </html>
