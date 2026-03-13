@@ -104,11 +104,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#020609;font-family:
 }
 .feat-list li::before{content:'⬡';color:#F5A623;font-size:14px;flex-shrink:0;}
 @keyframes slideIn{to{transform:translateX(0);opacity:1;}}
-.feat-list li:nth-child(1){animation-delay:.2s;}
-.feat-list li:nth-child(2){animation-delay:.35s;}
-.feat-list li:nth-child(3){animation-delay:.5s;}
-.feat-list li:nth-child(4){animation-delay:.65s;}
-.feat-list li:nth-child(5){animation-delay:.8s;}
+.feat-list li:nth-child(1){animation-delay:.5s;}
+.feat-list li:nth-child(2){animation-delay:.2s;}
+.feat-list li:nth-child(3){animation-delay:.3s;}
+.feat-list li:nth-child(4){animation-delay:.5s;}
+.feat-list li:nth-child(5){animation-delay:.5s;}
 
 /* ── SCREEN MOCKUP ── */
 .mockup{
@@ -585,12 +585,12 @@ for(let i=0;i<25;i++){
 // ── SLIDE ENGINE ──4
 const slides=document.querySelectorAll('.slide');
 let current=0;
-const TIMING = [6000,5000,5000,5000,5500,5500,5000,0];
+const TIMING = [5000,3000,4000,4000,6000,5000,5000,0];
 function showSlide(n){
   slides[current].classList.remove('active');
   slides[current].classList.add('out');
   setTimeout(()=>{
-    slides[current].classList.remove('out'),2000)};
+    slides[current].classList.remove('out').500)
   current=n;
   // Clone node to retrigger CSS animations
   const old=slides[current];
