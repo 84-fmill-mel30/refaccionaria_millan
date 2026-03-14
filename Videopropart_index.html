@@ -631,89 +631,10 @@ document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
 document.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-tx;
   if(Math.abs(dx)>50){if(dx<0)nextSlide();else if(current>0)showSlide(current-1);scheduleNext();}
-});// ─── MOTOR BLUETOOTH MASTER PROPART (Inyección directa) ───
-let obdDevice = null, obdChar = null, isConnected = false;
-let liveVals = { rpm: 0, ect: 0, bat: 0.0, maf: 0.0, tps: 0 };
-
-async function btConnect() {
-    if (isConnected) { 
-        if(obdDevice) await obdDevice.gatt.disconnect(); 
-        isConnected = false; updateBTUI(false); 
-        return; 
-    }
-    try {
-        addMsg('chalan', 'Buscando el V-Link, ingeniero...');
-        obdDevice = await navigator.bluetooth.requestDevice({
-            filters: [{ namePrefix: 'V-LINK' }, { namePrefix: 'OBD' }],
-            optionalServices: [0xFFF0]
-        });
-        const server = await obdDevice.gatt.connect();
-        const service = await server.getPrimaryService(0xFFF0);
-        obdChar = await service.getCharacteristic(0xFFF1);
-        await obdChar.startNotifications();
-        
-        obdChar.addEventListener('characteristicvaluechanged', (e) => {
-            const raw = new TextDecoder().decode(e.target.value);
-            parseOBDData(raw);
-        });
-
-        isConnected = true;
-        updateBTUI(true);
-        
-        // Handshake Automático ProPart
-        sendATCommand("ATZ"); // Reset
-        setTimeout(() => sendATCommand("ATE0"), 500); // Echo Off
-        setTimeout(() => sendATCommand("ATSP0"), 1000); // Auto Protocol
-        
-        addMsg('chalan', '¡Match exitoso! Ya estamos leyendo el carro en tiempo real.');
-        startDataPolling();
-    } catch (err) {
-        console.error(err);
-        updateBTUI(false);
-    }
-}
-
-function parseOBDData(data) {
-    if(data.includes("41 0C")) { // RPM
-        let p = data.split("41 0C")[1].trim().split(" ");
-        liveVals.rpm = Math.round(((parseInt(p[0], 16) * 256) + parseInt(p[1], 16)) / 4);
-        document.getElementById('val-rpm').textContent = liveVals.rpm;
-        updateGaugeBar('g-rpm', liveVals.rpm, 6000);
-    }
-    if(data.includes("41 05")) { // ECT (Temp)
-        let p = data.split("41 05")[1].trim().split(" ")[0];
-        liveVals.ect = parseInt(p, 16) - 40;
-        document.getElementById('val-temp').textContent = liveVals.ect;
-        updateGaugeBar('g-temp', liveVals.ect, 120);
-    }
-}
-
-function sendATCommand(cmd) {
-    if(obdChar && isConnected) {
-        obdChar.writeValue(new TextEncoder().encode(cmd + '\r'));
-    }
-}
-
-function startDataPolling() {
-    setInterval(() => {
-        if(isConnected) {
-            sendATCommand("010C"); // Pedir RPM
-            setTimeout(() => sendATCommand("0105"), 400); // Pedir Temp
-        }
-    }, 1500);
-}
-
-function updateBTUI(on) {
-    const dot = document.getElementById('btDot');
-    const stat = document.getElementById('btStat');
-    if(dot) dot.className = 'cdot' + (on ? ' on' : '');
-    if(stat) stat.textContent = on ? 'V-Link ONLINE' : 'V-Link OFF';
-}
-
-function updateGaugeBar(id, val, max) {
-    const g = document.getElementById(id);
-    if(g) g.style.setProperty('--gp', (val/max*100)+'%');
-  });
+});
 </script>
-</body>
+  </body>
+   </script>
+
+  
 </html>
