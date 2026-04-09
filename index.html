@@ -2,654 +2,500 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProPart System V7 — Spot Publicitario</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Refaccionaria Millán — Partes Eléctricas</title>
+<meta name="theme-color" content="#060D18">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#020609;font-family:'Barlow Condensed',sans-serif;}
+:root{
+  --bg:#060D18;--bg1:#0C1829;--bg2:#12233E;--bg3:#1A3058;
+  --bdr:#1E3A60;--gold:#F5A623;--cyan:#00D4FF;--green:#00E676;
+  --red:#FF3D5A;--purple:#9C59F7;--orange:#FF7043;
+  --txt:#D0E4F5;--txtD:#6880A0;--txtM:#344870;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* ── STAGE ── */
-#stage{
-  width:100%;height:100vh;
-  position:relative;overflow:hidden;
-  background:radial-gradient(ellipse at 60% 40%,#0A1830 0%,#020609 70%);
-}
+/* ═══ HEADER ═══ */
+.hdr{background:linear-gradient(135deg,#0A1828,#162444);padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:100}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--gold));background-size:200%;animation:bar 3s linear infinite}
+@keyframes bar{to{background-position:-200% 0}}
+.hdr-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#C47008);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 15px rgba(245,166,35,.3);flex-shrink:0}
+.hdr-info h1{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:1.5px;color:var(--gold);line-height:1.1}
+.hdr-info span{font-size:10px;color:var(--txtD);letter-spacing:.5px}
+.hdr-btns{margin-left:auto;display:flex;gap:8px}
+.hdr-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--bdr);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .12s}
+.hdr-btn:hover{border-color:var(--gold);background:rgba(245,166,35,.1)}
 
-/* ── GRID BACKGROUND ── */
-.bg-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(245,166,35,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(245,166,35,.04) 1px,transparent 1px);
-  background-size:50px 50px;
-  animation:gridShift 20s linear infinite;
-}
-@keyframes gridShift{to{background-position:50px 50px;}}
+/* ═══ SEARCH ═══ */
+.search{padding:16px;background:var(--bg1);border-bottom:1px solid var(--bdr)}
+.search-row{display:flex;gap:8px;max-width:600px;margin:0 auto}
+.search-inp{flex:1;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:12px 16px;color:var(--txt);font-size:14px;font-family:'Exo 2',sans-serif;outline:none;transition:border .15s}
+.search-inp:focus{border-color:var(--gold)}
+.search-inp::placeholder{color:var(--txtM)}
+.s-btn{width:48px;height:48px;border-radius:12px;border:1px solid var(--bdr);background:var(--bg2);font-size:20px;cursor:pointer;transition:all .15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.s-btn:hover{border-color:var(--gold);background:rgba(245,166,35,.08)}
+.s-btn.on{background:var(--red);border-color:var(--red);animation:pulse 1s infinite}
+.s-btn.scan{background:linear-gradient(135deg,var(--cyan),#0090B0);border-color:var(--cyan);color:#fff}
+@keyframes pulse{50%{opacity:.5}}
+#voiceStatus{text-align:center;font-size:11px;color:var(--cyan);margin-top:6px;min-height:16px}
 
-/* ── SCANLINES ── */
-.scanlines{
-  position:absolute;inset:0;pointer-events:none;z-index:2;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
-}
+/* ═══ CATEGORIES ═══ */
+.cats{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--bdr);background:var(--bg)}
+.cats::-webkit-scrollbar{display:none}
+.cat{padding:8px 16px;border-radius:20px;border:1px solid var(--bdr);background:var(--bg1);font-size:11px;font-weight:600;color:var(--txtD);cursor:pointer;transition:all .12s;white-space:nowrap;font-family:'Exo 2',sans-serif}
+.cat:hover,.cat.act{border-color:var(--gold);color:var(--gold);background:rgba(245,166,35,.08)}
 
-/* ── PARTICLES ── */
-.particle{
-  position:absolute;border-radius:50%;pointer-events:none;
-  animation:float linear infinite;
-}
-@keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+/* ═══ PRODUCT LIST ═══ */
+.products{max-width:600px;margin:0 auto;padding:12px 16px;min-height:40vh}
+.p-count{font-size:10px;color:var(--txtD);letter-spacing:1px;text-align:center;margin-bottom:10px}
 
-/* ── SLIDE SYSTEM ── */
-.slide{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  opacity:0;transform:scale(.97);
-  transition:opacity .1s ease,transform .2s ease; la 
-  z-index:5;padding:40px;
-}
-.slide.active{opacity:1;transform:scale(1);}
-.slide.out{opacity:0;transform:scale(1.03);}
+.p-card{background:var(--bg1);border:1px solid var(--bdr);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:all .18s;cursor:pointer}
+.p-card:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,166,35,.08)}
+.p-card:active{transform:scale(.98)}
+.p-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid var(--bdr)}
+.p-ico.focos{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.2)}
+.p-ico.reguladores{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.2)}
+.p-ico.bobinas{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.2)}
+.p-ico.bombas{background:rgba(255,61,90,.1);border-color:rgba(255,61,90,.2)}
+.p-ico.sensores{background:rgba(156,89,247,.1);border-color:rgba(156,89,247,.2)}
+.p-ico.solenoides{background:rgba(255,112,67,.1);border-color:rgba(255,112,67,.2)}
+.p-ico.accesorios{background:var(--bg2)}
+.p-body{flex:1;min-width:0}
+.p-code{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:.5px}
+.p-name{font-size:12px;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-cat{font-size:9px;color:var(--txtD);margin-top:1px}
+.p-right{text-align:right;flex-shrink:0}
+.p-price{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;color:var(--green)}
+.p-stock{font-size:9px;color:var(--txtD)}
+.p-stock.low{color:var(--red)}
 
-/* ── SLIDE 1 — LOGO INTRO ── */
-#s1 .logo-ring{
-  width:180px;height:180px;border-radius:50%;
-  border:2px solid rgba(245,166,35,.2);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;margin-bottom:40px;
-}
-#s1 .logo-ring::before{
-  content:'';position:absolute;inset:-4px;border-radius:50%;
-  border:3px solid transparent;
-  border-top-color:#F5A623;border-right-color:#F5A623;
-  animation:spin2 1.5s linear infinite;
-}
-#s1 .logo-ring::after{
-  content:'';position:absolute;inset:15px;border-radius:50%;
-  border:1px solid rgba(245,166,35,.1);
-}
-@keyframes spin2{to{transform:rotate(360deg);}}
-#s1 .pp{font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:#F5A623;}
-#s1 .brand{font-size:56px;font-weight:900;letter-spacing:12px;color:#F5A623;text-transform:uppercase;margin-bottom:8px;}
-#s1 .tagline{font-size:16px;font-weight:300;color:#6880A0;letter-spacing:6px;text-transform:uppercase;}
-#s1 .flag{font-size:36px;margin-top:16px;}
-#s1 .ver{font-size:13px;font-family:'Share Tech Mono',monospace;color:#344870;margin-top:8px;letter-spacing:3px;}
+/* WELCOME */
+.welcome{text-align:center;padding:40px 20px}
+.welcome-hex{font-size:56px;margin-bottom:12px;filter:drop-shadow(0 0 15px rgba(245,166,35,.3))}
+.welcome h2{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.welcome p{font-size:12px;color:var(--txtD);margin-top:6px;line-height:1.6}
+.welcome .tip{margin-top:14px;padding:10px 16px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;font-size:11px;color:var(--cyan)}
 
-/* ── TEXT EFFECTS ── */
-.glow-text{text-shadow:0 0 30px rgba(245,166,35,.5),0 0 60px rgba(245,166,35,.2);}
-.cyan-text{color:#00D4FF;text-shadow:0 0 20px rgba(0,212,255,.4);}
-.gold-text{color:#F5A623;}
-.red-text{color:#FF3D5A;}
-.line-reveal{overflow:hidden;}
-.line-reveal span{display:inline-block;transform:translateY(100%);animation:lineUp .6s ease forwards;}
-@keyframes lineUp{to{transform:translateY(0);}}
+/* SCANNER */
+#scanOverlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.9);flex-direction:column;align-items:center;justify-content:center}
+#scanOverlay.show{display:flex}
+#scanVideo{width:90%;max-width:400px;border-radius:16px;border:2px solid var(--gold);box-shadow:0 0 30px rgba(245,166,35,.3)}
+#scanLabel{color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:16px;margin-top:12px;letter-spacing:2px}
+#scanClose{margin-top:16px;padding:10px 30px;border-radius:10px;background:var(--red);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Exo 2',sans-serif}
 
-/* ── FEATURE SLIDES ── */
-.feat-badge{
-  font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;
-  color:#F5A623;border:1px solid rgba(245,166,35,.3);
-  padding:6px 16px;border-radius:20px;
-  background:rgba(245,166,35,.06);
-  margin-bottom:20px;display:inline-block;
-}
-.feat-title{font-size:64px;font-weight:900;line-height:.95;text-transform:uppercase;margin-bottom:16px;}
-.feat-sub{font-size:18px;font-weight:300;color:#7090B0;letter-spacing:2px;margin-bottom:32px;}
-.feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
-.feat-list li{
-  font-size:20px;font-weight:400;color:#A0BCD8;
-  display:flex;align-items:center;gap:14px;
-  transform:translateX(-30px);opacity:0;
-  animation:slideIn .4s ease forwards;
-}
-.feat-list li::before{content:'⬡';color:#F5A623;font-size:14px;flex-shrink:0;}
-@keyframes slideIn{to{transform:translateX(0);opacity:1;}}
-.feat-list li:nth-child(1){animation-delay:.5ms;}
-.feat-list li:nth-child(2){animation-delay:.25s;}
-.feat-list li:nth-child(3){animation-delay:.03s;}
-.feat-list li:nth-child(4){animation-delay:.54ms;}
-.feat-list li:nth-child(5){animation-delay:.3s;}
+/* CHARDS MINI */
+.chards-fab{position:fixed;bottom:16px;right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#C47008);border:none;font-size:26px;cursor:pointer;box-shadow:0 4px 20px rgba(245,166,35,.4);z-index:100;transition:all .18s;display:flex;align-items:center;justify-content:center}
+.chards-fab:hover{transform:scale(1.1)}
+.chards-panel{display:none;position:fixed;bottom:80px;right:16px;width:320px;max-width:calc(100vw - 32px);background:var(--bg1);border:1px solid var(--bdr);border-radius:16px;z-index:100;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.chards-panel.show{display:block}
+.chards-head{padding:10px 14px;background:linear-gradient(135deg,#0A1422,#162444);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.chards-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#C47008);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chards-msgs{height:200px;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
+.chards-msgs::-webkit-scrollbar{width:2px}
+.chards-msgs::-webkit-scrollbar-thumb{background:var(--bdr)}
+.msg-bot{align-self:flex-start;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px 10px 10px 2px;padding:8px 10px;max-width:85%;font-size:11px}
+.msg-usr{align-self:flex-end;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.2);border-radius:10px 10px 2px 10px;padding:8px 10px;max-width:85%;font-size:11px}
+.chards-input{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--bdr);background:var(--bg2)}
+.chards-input input{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;padding:6px 12px;color:var(--txt);font-size:11px;outline:none;font-family:'Exo 2',sans-serif}
+.chards-input button{width:32px;height:32px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--gold),#C47008);color:#000;font-size:14px;cursor:pointer;flex-shrink:0}
 
-/* ── SCREEN MOCKUP ── */
-.mockup{
-  width:340px;height:220px;
-  background:#040C18;
-  border:2px solid rgba(245,166,35,.3);
-  border-radius:12px;
-  overflow:hidden;position:relative;
-  box-shadow:0 0 60px rgba(245,166,35,.15),0 0 120px rgba(0,0,0,.5);
-  flex-shrink:0;
-}
-.mockup-bar{
-  height:28px;background:rgba(245,166,35,.08);
-  border-bottom:1px solid rgba(245,166,35,.15);
-  display:flex;align-items:center;padding:0 10px;gap:6px;
-}
-.mb-dot{width:7px;height:7px;border-radius:50%;}
-.mockup-content{padding:10px;display:flex;flex-direction:column;gap:6px;}
-.mc-row{height:6px;border-radius:3px;background:rgba(245,166,35,.15);animation:mcPulse 2s ease infinite;}
-.mc-row.cyan{background:rgba(0,212,255,.2);animation-delay:.3s;}
-.mc-row.green{background:rgba(0,230,118,.2);animation-delay:.6s;}
-@keyframes mcPulse{0%,100%{opacity:.5}50%{opacity:1;}}
+/* CONTACT */
+.contact{background:var(--bg1);border-top:1px solid var(--bdr);padding:20px 16px;text-align:center;margin-top:20px}
+.contact h3{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+.c-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.c-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;transition:all .15s;font-family:'Rajdhani',sans-serif;letter-spacing:1px}
+.c-btn.wa{background:#25D366;color:#fff}
+.c-btn.wa:hover{box-shadow:0 4px 15px rgba(37,211,102,.3)}
+.c-btn.mail{background:var(--bg2);border:1px solid var(--bdr);color:var(--cyan)}
+.contact-addr{font-size:10px;color:var(--txtD);margin-top:10px;line-height:1.6}
 
-/* ── SPLIT LAYOUT ── */
-.split{display:flex;gap:60px;align-items:center;max-width:1000px;width:100%;}
-.split-left,.split-right{flex:1;}
+/* DETAIL MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:var(--bg1);border:1px solid var(--bdr);border-radius:16px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
+.modal-head{padding:16px;background:linear-gradient(135deg,var(--bg2),var(--bg3));border-radius:16px 16px 0 0;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px}
+.modal-body{padding:16px}
+.modal-close{margin-left:auto;background:var(--red);border:none;color:#fff;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer}
+.m-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(30,48,88,.4);font-size:12px}
+.m-row:last-child{border:none}
+.m-label{color:var(--txtD);font-size:10px;font-weight:700;letter-spacing:1px}
+.m-val{font-weight:600}
+.m-btns{display:flex;gap:8px;margin-top:12px}
+.m-btn{padding:10px 18px;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:'Exo 2',sans-serif;transition:all .12s;flex:1;text-align:center}
+.m-btn.wa{background:#25D366;color:#fff}
+.m-btn.print{background:var(--bg2);color:var(--cyan);border:1px solid var(--bdr)}
+.m-btn.edit{background:rgba(245,166,35,.12);color:var(--gold);border:1px solid rgba(245,166,35,.2)}
+.m-btn:hover{transform:translateY(-1px)}
 
-/* ── GAUGE VISUAL ── */
-.gauge-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
-.gauge-mini{
-  width:80px;text-align:center;
-  background:rgba(10,20,34,.8);border:1px solid rgba(30,48,88,.8);
-  border-radius:8px;padding:8px 4px;
-}
-.gauge-val{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;}
-.gauge-lbl{font-size:8px;letter-spacing:1px;color:#6880A0;margin-top:2px;}
+.footer{text-align:center;padding:16px;font-size:9px;color:var(--txtM);letter-spacing:1px;padding-bottom:80px}
 
-/* ── DTC CARD ── */
-.dtc-card{
-  background:rgba(255,61,90,.06);border:1px solid rgba(255,61,90,.25);
-  border-radius:8px;padding:12px 16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:12px;
-  transform:translateX(-20px);opacity:0;
-  animation:slideIn .4s ease forwards;
-}
-.dtc-code{font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;color:#FF3D5A;}
+/* ADMIN FORM */
+.admin-form{padding:16px}
+.af-field{margin-bottom:10px}
+.af-field label{display:block;font-size:10px;font-weight:700;color:var(--txtD);letter-spacing:1px;margin-bottom:3px}
+.af-field input,.af-field select{width:100%;padding:8px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:12px;font-family:'Exo 2',sans-serif;outline:none}
+.af-field input:focus{border-color:var(--gold)}
 
-/* ── CHALAN VISUAL ── */
-.chalan-viz{
-  width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,rgba(245,166,35,.15),rgba(0,212,255,.08),transparent 70%);
-  border:2px solid rgba(245,166,35,.3);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-  animation:chalanFloat 3s ease infinite;
+@media(max-width:360px){
+  .hdr-info h1{font-size:13px}
+  .p-card{padding:10px;gap:8px}
+  .p-ico{width:36px;height:36px;font-size:16px}
 }
-@keyframes chalanFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
-.chalan-viz::before{
-  content:'';position:absolute;inset:-8px;border-radius:50%;
-  border:1px solid transparent;border-top-color:rgba(245,166,35,.3);
-  animation:spin2 4s linear infinite;
-}
-.chalan-viz::after{
-  content:'';position:absolute;inset:-20px;border-radius:50%;
-  border:1px solid transparent;border-right-color:rgba(0,212,255,.2);
-  animation:spin2 8s linear infinite reverse;
-}
-.chalan-emoji{font-size:72px;}
-
-/* ── VOICE WAVE ── */
-.voice-wave{display:flex;gap:4px;align-items:center;margin-top:20px;}
-.vbar{width:4px;border-radius:2px;background:#F5A623;animation:vwave .5s ease infinite alternate;}
-.vbar:nth-child(1){height:12px;animation-delay:0s;}
-.vbar:nth-child(2){height:24px;animation-delay:.07s;}
-.vbar:nth-child(3){height:36px;animation-delay:.14s;}
-.vbar:nth-child(4){height:28px;animation-delay:.21s;}
-.vbar:nth-child(5){height:16px;animation-delay:.28s;}
-.vbar:nth-child(6){height:32px;animation-delay:.35s;}
-.vbar:nth-child(7){height:20px;animation-delay:.42s;}
-@keyframes vwave{to{opacity:.3;transform:scaleY(.4);}}
-
-/* ── BRANDS VISUAL ── */
-.brands-showcase{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
-.bs-item{
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  padding:16px 20px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.06);
-  background:rgba(255,255,255,.02);
-  transform:translateY(20px);opacity:0;
-  animation:slideUp .4s ease forwards;
-}
-.bs-item:nth-child(1){animation-delay:.1s;}
-.bs-item:nth-child(2){animation-delay:.2s;}
-.bs-item:nth-child(3){animation-delay:.3s;}
-.bs-item:nth-child(4){animation-delay:.4s;}
-.bs-item:nth-child(5){animation-delay:.5s;}
-.bs-item:nth-child(6){animation-delay:.6s;}
-@keyframes slideUp{to{transform:translateY(0);opacity:1;}}
-.bs-name{font-size:11px;letter-spacing:2px;font-weight:700;color:#6880A0;}
-
-/* ── CTA FINAL ── */
-#s8{text-align:center;}
-.cta-price{
-  font-size:80px;font-weight:900;
-  background:linear-gradient(135deg,#F5A623,#FFD080,#F5A623);
-  background-clip:text;-webkit-background-clip:text;color:transparent;
-  animation:shimmer 2s linear infinite;
-  background-size:200%;
-}
-@keyframes shimmer{0%{background-position:0%}100%{background-position:200%;}}
-.cta-sub{font-size:18px;color:#6880A0;letter-spacing:3px;margin-bottom:40px;}
-.cta-btn{
-  display:inline-block;padding:18px 48px;
-  background:linear-gradient(135deg,#F5A623,#C47008);
-  color:#000;font-size:20px;font-weight:900;letter-spacing:3px;
-  border-radius:50px;cursor:pointer;
-  box-shadow:0 0 40px rgba(245,166,35,.4);
-  animation:ctaBounce 2s ease infinite;
-  text-transform:uppercase;
-}
-@keyframes ctaBounce{0%,100%{transform:scale(1);}50%{transform:scale(1.04);box-shadow:0 0 60px rgba(245,166,35,.6);}}
-.contact-bar{
-  display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;justify-content:center;
-}
-.contact-item{
-  font-size:15px;color:#4A6480;letter-spacing:1px;
-  display:flex;align-items:center;gap:8px;
-}
-
-/* ── PROGRESS BAR ── */
-#progress{
-  position:fixed;bottom:0;left:0;height:3px;
-  background:linear-gradient(90deg,#F5A623,#00D4FF);
-  box-shadow:0 0 10px rgba(245,166,35,.5);
-  transition:width .3s ease;z-index:100;
-}
-#slide-counter{
-  position:fixed;bottom:12px;right:20px;z-index:100;
-  font-family:'Share Tech Mono',monospace;font-size:11px;color:#344870;
-  letter-spacing:2px;
-}
-#skip-btn{
-  position:fixed;bottom:10px;left:20px;z-index:100;
-  font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:2px;
-  color:#344870;cursor:pointer;padding:4px 10px;
-  border:1px solid #1E3058;border-radius:20px;background:transparent;
-  transition:all .15s;
-}
-#skip-btn:hover{color:#F5A623;border-color:#F5A623;}
-
-/* ── CERT BADGE ── */
-.cert{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:10px 20px;border-radius:40px;
-  border:1px solid rgba(0,230,118,.3);
-  background:rgba(0,230,118,.05);
-  font-size:13px;color:#00E676;letter-spacing:1px;
-  margin:6px;
-}
-
-/* ── BIG STAT ── */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:700px;width:100%;margin-top:20px;}
-.stat-box{
-  background:rgba(10,20,34,.8);border:1px solid rgba(30,48,88,.8);
-  border-radius:12px;padding:20px;text-align:center;
-  transform:translateY(20px);opacity:0;
-  animation:slideUp .4s ease forwards;
-}
-.stat-box:nth-child(1){animation-delay:.2s;}
-.stat-box:nth-child(2){animation-delay:.35s;}
-.stat-box:nth-child(3){animation-delay:.5s;}
-.stat-num{font-size:44px;font-weight:900;color:#F5A623;font-family:'Share Tech Mono',monospace;line-height:1;}
-.stat-unit{font-size:13px;color:#6880A0;letter-spacing:2px;margin-top:4px;}
-
-/* ── WIRE TABLE ── */
-.wire-row{
-  display:flex;align-items:center;gap:14px;
-  padding:8px 12px;border-bottom:1px solid rgba(30,48,88,.5);
-  transform:translateX(-20px);opacity:0;animation:slideIn .35s ease forwards;
-}
-.wire-swatch{width:32px;height:8px;border-radius:4px;flex-shrink:0;position:relative;}
-.wire-swatch::after{content:'';position:absolute;top:1px;left:0;right:0;height:2px;border-radius:2px;}
-.wire-label{font-family:'Share Tech Mono',monospace;font-size:13px;color:#A0BCD8;flex:1;}
-.wire-val{font-size:11px;color:#6880A0;}
 </style>
 </head>
 <body>
-<div id="stage">
-  <div class="bg-grid"></div>
-  <div class="scanlines"></div>
-  <div id="particles"></div>
 
-  <!-- SLIDE 1: LOGO INTRO -->
-  <div class="slide active" id="s1">
-    <div class="logo-ring">
-      <div class="pp">PP</div>
-    </div>
-    <div class="brand glow-text">PROPART</div>
-    <div class="tagline">SYSTEM V7</div>
-    <div class="flag">🇲🇽</div>
-    <div class="ver">DIAGNÓSTICO AUTOMOTRIZ PROFESIONAL</div>
+<!-- ═══ HEADER ═══ -->
+<div class="hdr">
+  <div class="hdr-logo">🔧</div>
+  <div class="hdr-info">
+    <h1>REFACCIONARIA MILLÁN</h1>
+    <span>Partes Eléctricas · Alpuyeca, Morelos</span>
   </div>
-
-  <!-- SLIDE 2: PROBLEMA -->
-  <div class="slide" id="s2">
-    <div class="split">
-      <div class="split-left">
-        <div class="feat-badge">EL PROBLEMA</div>
-        <div class="feat-title" style="color:#FF3D5A">¿Cuánto<br><span style="color:white">cuesta</span><br>no saber?</div>
-        <div class="feat-sub">Cada falla no detectada a tiempo cuesta</div>
-        <ul class="feat-list">
-          <li>Diagnósticos incorrectos = clientes perdidos</li>
-          <li>Horas buscando información dispersa</li>
-          <li>Fallas intermitentes que nadie encuentra</li>
-          <li>Accidentes por problemas no detectados</li>
-        </ul>
-      </div>
-      <div class="split-right" style="display:flex;flex-direction:column;gap:10px">
-        <div class="dtc-card" style="animation-delay:.3s">
-          <div class="dtc-code">P0101</div>
-          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">MAF Fuera de Rango</div><div style="font-size:11px;color:#6880A0">¿Cable verde/blanco o verde? ¿Gap de voltaje?</div></div>
-        </div>
-        <div class="dtc-card" style="animation-delay:.5s">
-          <div class="dtc-code">P0335</div>
-          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">CKP Sin Señal</div><div style="font-size:11px;color:#6880A0">¿Am/V o amarillo sólido? ¿Resistencia?</div></div>
-        </div>
-        <div class="dtc-card" style="animation-delay:.7s">
-          <div class="dtc-code">P0420</div>
-          <div><div style="font-size:14px;font-weight:600;color:#D0E4F5">Catalizador Degradado</div><div style="font-size:11px;color:#6880A0">¿O2 N/Am o naranja? ¿Voltaje límite?</div></div>
-        </div>
-      </div>
-    </div>
+  <div class="hdr-btns">
+    <div class="hdr-btn" onclick="openScanner()" title="Escanear código">📷</div>
+    <div class="hdr-btn" onclick="requireAdmin()" title="Administrador">⚙️</div>
   </div>
+</div>
 
-  <!-- SLIDE 3: LA SOLUCIÓN -->
-  <div class="slide" id="s3">
-    <div class="feat-badge">LA SOLUCIÓN</div>
-    <div class="feat-title glow-text" style="font-size:76px;text-align:center">
-      TODO EL TALLER<br>
-      <span class="cyan-text">EN UN</span> CELULAR
-    </div>
-    <div class="feat-sub" style="text-align:center;font-size:20px">Base de datos técnica completa · BLE nativo · IA predictiva</div>
-    <div class="stat-grid">
-      <div class="stat-box">
-        <div class="stat-num">26</div>
-        <div class="stat-unit">HOJAS DB</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">6+</div>
-        <div class="stat-unit">MARCAS OEM</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">100%</div>
-        <div class="stat-unit">OFFLINE</div>
-      </div>
-    </div>
+<!-- ═══ SEARCH ═══ -->
+<div class="search">
+  <div class="search-row">
+    <input class="search-inp" id="searchInp" type="text" placeholder="Busca por código, marca o descripción..." oninput="buscar()">
+    <button class="s-btn" id="voiceBtn" onclick="toggleVoice()" title="Buscar por voz">🎤</button>
+    <button class="s-btn scan" onclick="openScanner()" title="Escanear código de barras">📷</button>
   </div>
+  <div id="voiceStatus"></div>
+</div>
 
-  <!-- SLIDE 4: COLORES REALES DE CABLE -->
-  <div class="slide" id="s4">
-    <div class="split">
-      <div class="split-left">
-        <div class="feat-badge">PRECISIÓN OEM</div>
-        <div class="feat-title" style="font-size:52px">Colores<br><span class="gold-text">exactos</span><br>del FSM</div>
-        <div class="feat-sub">Cada color verificado contra el manual de fábrica</div>
-      </div>
-      <div class="split-right">
-        <div style="background:rgba(4,12,24,.9);border:1px solid rgba(30,48,88,.8);border-radius:12px;padding:16px;font-size:11px;color:#344870;font-family:'Share Tech Mono',monospace;margin-bottom:12px">
-          // Nissan GA16DE — FSM EF Section
-        </div>
-        <div class="wire-row" style="animation-delay:.2s">
-          <div class="wire-swatch" style="background:#333333;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:white;border-radius:2px;opacity:.7"></div></div>
-          <div class="wire-label">INJ#1 — N/Bl</div>
-          <div class="wire-val">12V→0V Low Side</div>
-        </div>
-        <div class="wire-row" style="animation-delay:.35s">
-          <div class="wire-swatch" style="background:#BBAA00;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#117722;border-radius:2px;opacity:.9"></div></div>
-          <div class="wire-label">CKP NE+ — Am/V</div>
-          <div class="wire-val">AC 1-40Vpp sinusoidal</div>
-        </div>
-        <div class="wire-row" style="animation-delay:.5s">
-          <div class="wire-swatch" style="background:#228833;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:white;border-radius:2px;opacity:.6"></div></div>
-          <div class="wire-label">MAF VG — V/Bl</div>
-          <div class="wire-val">0.8V ralentí / 4.0V WOT</div>
-        </div>
-        <div class="wire-row" style="animation-delay:.65s">
-          <div class="wire-swatch" style="background:#2A2A00;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#CCAA00;border-radius:2px;opacity:.8"></div></div>
-          <div class="wire-label">O2 señal — N/Am</div>
-          <div class="wire-val">0.1-0.9V lambda cíclico</div>
-        </div>
-        <div class="wire-row" style="animation-delay:.8s">
-          <div class="wire-swatch" style="background:#551111;"><div style="position:absolute;top:1px;left:0;right:0;height:2px;background:#AA0000;border-radius:2px;opacity:.5"></div></div>
-          <div class="wire-label">IGT — N/R</div>
-          <div class="wire-val">5V→0V pulso dwell 2ms</div>
-        </div>
-      </div>
-    </div>
+<!-- ═══ CATEGORÍAS ═══ -->
+<div class="cats" id="catBar">
+  <div class="cat act" onclick="filterCat('',this)">Todos</div>
+  <div class="cat" onclick="filterCat('Focos',this)">💡 Focos</div>
+  <div class="cat" onclick="filterCat('Reguladores',this)">⚡ Reguladores</div>
+  <div class="cat" onclick="filterCat('Bobinas',this)">🔌 Bobinas</div>
+  <div class="cat" onclick="filterCat('Bombas',this)">🔋 Bombas</div>
+  <div class="cat" onclick="filterCat('Sensores',this)">📡 Sensores</div>
+  <div class="cat" onclick="filterCat('Solenoides',this)">⚙️ Solenoides</div>
+  <div class="cat" onclick="filterCat('Accesorios',this)">🔧 Accesorios</div>
+</div>
+
+<!-- ═══ PRODUCTS ═══ -->
+<div class="products">
+  <div class="welcome" id="welcome">
+    <div class="welcome-hex">🔌</div>
+    <h2>¿Qué parte necesitas?</h2>
+    <p>Busca por nombre, código o marca.<br>También puedes escanear el código de barras con la cámara.</p>
+    <div class="tip">💡 Toca el micrófono 🎤 y di: <b>"¿Tienes bobina para Jetta?"</b></div>
   </div>
+  <div id="pList"></div>
+</div>
 
-  <!-- SLIDE 5: CHALÁN IA -->
-  <div class="slide" id="s5">
-    <div class="split">
-      <div class="split-left" style="text-align:center">
-        <div class="chalan-viz">
-          <div class="chalan-emoji">🤖</div>
-        </div>
-        <div class="voice-wave" style="justify-content:center">
-          <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
-          <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
-          <div class="vbar"></div>
-        </div>
-        <div style="font-size:13px;color:#6880A0;letter-spacing:2px;margin-top:12px">ESCUCHANDO…</div>
-      </div>
-      <div class="split-right">
-        <div class="feat-badge">CHALÁN — IA DE VOZ</div>
-        <div class="feat-title" style="font-size:52px">Tu asistente<br><span class="gold-text">en el taller</span></div>
-        <div style="background:rgba(10,20,34,.9);border:1px solid rgba(30,48,88,.8);border-radius:12px;padding:16px;margin-bottom:16px">
-          <div style="font-size:13px;color:#6880A0;margin-bottom:8px">— Chalán, ¿qué cable es el de señal del MAF?</div>
-          <div style="font-size:14px;color:#D0E4F5;line-height:1.5">
-            <span style="color:#F5A623">Chalán:</span> Es el <strong style="color:#228833">Verde/Blanco (V/Bl)</strong>, el más delgado del conector del MAF. Debe tener 0.8V en ralentí, ingeniero. ¿Lo activo en el visualizer para que lo vea?
-          </div>
-        </div>
-        <ul class="feat-list">
-          <li>Habla en voz o escribe en español</li>
-          <li>Activa la cámara para ver lo que tú ves</li>
-          <li>Identifica cables por cámara en tiempo real</li>
-          <li>Conectado a la DB técnica completa</li>
-        </ul>
-      </div>
-    </div>
+<!-- ═══ CONTACTO ═══ -->
+<div class="contact" id="contacto">
+  <h3>📱 CONTACTO</h3>
+  <div class="c-btns">
+    <a class="c-btn wa" href="https://wa.me/527776838196?text=Hola%2C%20busco%20una%20refacci%C3%B3n%20en%20Refaccionaria%20Mill%C3%A1n" target="_blank">📱 777-683-8196</a>
+    <a class="c-btn wa" href="https://wa.me/522219567392?text=Hola%2C%20busco%20una%20refacci%C3%B3n%20en%20Refaccionaria%20Mill%C3%A1n" target="_blank">📱 221-956-7392</a>
+    <a class="c-btn mail" href="mailto:FM095329@gmail.com">📧 FM095329@gmail.com</a>
   </div>
+  <div class="contact-addr">Fernando Millán Melchor<br>📍 Av. Vicente Guerrero s/n, Col. Centro, Alpuyeca, Xochitepec, Morelos C.P. 62790</div>
+</div>
 
-  <!-- SLIDE 6: PULSAR PREDICTIVO -->
-  <div class="slide" id="s6">
-    <div class="feat-badge">EXCLUSIVO ProPart</div>
-    <div class="feat-title glow-text" style="font-size:68px;text-align:center;margin-bottom:8px">
-      PULSAR<br><span class="cyan-text">PREDICTIVO</span>
+<div class="footer">© 2026 Refaccionaria de Partes Eléctricas Millán · DATESEG MX</div>
+
+<!-- ═══ SCANNER OVERLAY ═══ -->
+<div id="scanOverlay">
+  <div id="scanLabel">📷 APUNTA AL CÓDIGO DE BARRAS</div>
+  <video id="scanVideo" autoplay playsinline></video>
+  <div id="scanResult" style="color:var(--green);font-size:14px;margin-top:10px;font-weight:700"></div>
+  <button id="scanClose" onclick="closeScanner()">✕ CERRAR</button>
+</div>
+
+<!-- ═══ CHARDS FAB ═══ -->
+<button class="chards-fab" onclick="tgChards()">🤖</button>
+<div class="chards-panel" id="chardsPanel">
+  <div class="chards-head">
+    <div class="chards-av">🤖</div>
+    <div>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--gold)">Chards — Asistente Refaccionaria</div>
+      <div style="font-size:9px;color:var(--green)">En línea</div>
     </div>
-    <div class="feat-sub" style="text-align:center">Detecta fallas <strong style="color:white">antes</strong> de que ocurran</div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:800px">
-      <div style="flex:1;min-width:220px;background:rgba(255,61,90,.06);border:1px solid rgba(255,61,90,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .2s ease forwards">
-        <div style="font-size:32px;margin-bottom:8px">⚠️</div>
-        <div style="font-size:15px;font-weight:700;color:#FF3D5A;margin-bottom:6px">MAF fallará en ~300km</div>
-        <div style="font-size:12px;color:#6880A0">Fluctuación anómala detectada. Preventivo: $200 vs reparación $1,800</div>
-      </div>
-      <div style="flex:1;min-width:220px;background:rgba(255,140,0,.06);border:1px solid rgba(255,140,0,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .4s ease forwards">
-        <div style="font-size:32px;margin-bottom:8px">🔋</div>
-        <div style="font-size:15px;font-weight:700;color:#FF8C00;margin-bottom:6px">Batería en degradación</div>
-        <div style="font-size:12px;color:#6880A0">Voltaje bajo carga cayendo. Preventivo: $800 vs quedarse tirado: Priceless</div>
-      </div>
-      <div style="flex:1;min-width:220px;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:12px;padding:16px;transform:translateY(20px);opacity:0;animation:slideUp .4s .6s ease forwards">
-        <div style="font-size:32px;margin-bottom:8px">⚡</div>
-        <div style="font-size:15px;font-weight:700;color:#F5A623;margin-bottom:6px">Banda accesorios</div>
-        <div style="font-size:12px;color:#6880A0">Patrón de deslizamiento. Preventivo: $380 vs falla en carretera: +$3,000</div>
-      </div>
-    </div>
+    <button style="margin-left:auto;background:none;border:none;color:var(--txtD);font-size:16px;cursor:pointer" onclick="tgChards()">✕</button>
   </div>
-
-  <!-- SLIDE 7: MARCAS Y DIESEL -->
-  <div class="slide" id="s7">
-    <div class="feat-badge">COBERTURA MULTIMARCA</div>
-    <div class="feat-title" style="font-size:60px;text-align:center;margin-bottom:24px">
-      Gasolina · <span class="gold-text">Diesel</span> · EV<br>
-      <span style="font-size:40px;color:#7090B0;font-weight:400">1986 — 2025</span>
-    </div>
-    <div class="brands-showcase">
-      <div class="bs-item">
-        <svg viewBox="0 0 80 40" width="70" height="35">
-          <ellipse cx="40" cy="20" rx="36" ry="14" fill="none" stroke="#C3002F" stroke-width="2.5"/>
-          <rect x="4" y="16" width="72" height="8" fill="#C3002F"/>
-          <text x="40" y="23" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="8" fill="white" letter-spacing="1.5">NISSAN</text>
-        </svg>
-        <div class="bs-name">NISSAN</div>
-      </div>
-      <div class="bs-item">
-        <svg viewBox="0 0 60 60" width="44" height="44">
-          <circle cx="30" cy="30" r="28" fill="#001E62"/>
-          <circle cx="30" cy="30" r="22" fill="none" stroke="white" stroke-width="2"/>
-          <text x="30" y="26" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="14" fill="white">V</text>
-          <text x="30" y="44" text-anchor="middle" font-family="Arial Black" font-weight="900" font-size="14" fill="white">W</text>
-        </svg>
-        <div class="bs-name">VW</div>
-      </div>
-      <div class="bs-item">
-        <svg viewBox="0 0 80 40" width="70" height="35">
-          <polygon points="8,8 30,8 30,18 18,18 18,22 30,22 30,32 8,32 8,22 20,22 20,18 8,18" fill="#D4A017"/>
-          <polygon points="50,8 72,8 72,18 60,18 60,22 72,22 72,32 50,32 50,22 62,22 62,18 50,18" fill="#D4A017"/>
-        </svg>
-        <div class="bs-name">CHEVY</div>
-      </div>
-      <div class="bs-item">
-        <svg viewBox="0 0 80 38" width="70" height="33">
-          <ellipse cx="40" cy="19" rx="36" ry="16" fill="#003476"/>
-          <text x="40" y="25" text-anchor="middle" font-family="Times New Roman" font-style="italic" font-weight="bold" font-size="18" fill="white">Ford</text>
-        </svg>
-        <div class="bs-name">FORD</div>
-      </div>
-      <div class="bs-item">
-        <svg viewBox="0 0 60 50" width="50" height="42">
-          <ellipse cx="30" cy="25" rx="18" ry="12" fill="none" stroke="#EB0A1E" stroke-width="4"/>
-          <ellipse cx="30" cy="25" rx="28" ry="9" fill="none" stroke="#EB0A1E" stroke-width="4"/>
-          <line x1="30" y1="2" x2="30" y2="48" stroke="#EB0A1E" stroke-width="2.5"/>
-        </svg>
-        <div class="bs-name">TOYOTA</div>
-      </div>
-      <div class="bs-item">
-        <svg viewBox="0 0 60 46" width="50" height="38">
-          <path d="M6,6 L6,40 L16,40 L16,28 L44,28 L44,40 L54,40 L54,6 L44,6 L44,22 L16,22 L16,6 Z" fill="#CC0000"/>
-        </svg>
-        <div class="bs-name">HONDA</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:24px">
-      <div class="cert">🛢️ EGR/Common Rail/DPF</div>
-      <div class="cert">⚡ CAN/OBD2/K-Line</div>
-      <div class="cert">🔑 IMMO/Transponders</div>
-      <div class="cert">💾 Flash ECU/Seed-Key</div>
-    </div>
+  <div class="chards-msgs" id="chardsMsgs">
+    <div class="msg-bot">¡Buen día! 🔧 Soy Chards, asistente de la Refaccionaria Millán. Pregúntame por cualquier pieza — te digo si la tenemos, cuánto cuesta y cuántas hay en stock.</div>
   </div>
-
-  <!-- SLIDE 8: CTA -->
-  <div class="slide" id="s8">
-    <div class="feat-badge">🇲🇽 HECHO EN ALPUYECA, MORELOS · ProPart System V12</div>
-    <div class="cta-price">PROPART V7</div>
-    <div class="cta-sub">La herramienta que su taller necesita</div>
-    <div class="cta-btn" onclick="window.open('https://wa.me/527776838196?text=Hola, me interesa ProPart V7')">
-      📱 CONTACTAR AHORA
-    </div>
-    <div class="contact-bar">
-      <div class="contact-item">📱 777-683-8196</div>
-      <div class="contact-item">📧 FM095329@gmail.com</div>
-      <div class="contact-item">🌐 ProPart System V12</div>
-    </div>
-    <div style="margin-top:32px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
-      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
-        <div style="font-size:26px;font-weight:900;color:#00E676;font-family:'Share Tech Mono'">GRATIS</div>
-        <div>Básico para siempre</div>
-      </div>
-      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
-        <div style="font-size:26px;font-weight:900;color:#F5A623;font-family:'Share Tech Mono'">$599</div>
-        <div>Plan Pro / mes</div>
-      </div>
-      <div style="text-align:center;font-size:13px;color:#344870;letter-spacing:1px">
-        <div style="font-size:26px;font-weight:900;color:#9C59F7;font-family:'Share Tech Mono'">$1,199</div>
-        <div>Plan Master / mes</div>
-      </div>
-    </div>
+  <div class="chards-input">
+    <input id="chardsInp" placeholder="Ej: ¿Tienes bobina para Tsuru?" onkeydown="if(event.key==='Enter')sendChards()">
+    <button onclick="sendChards()">➤</button>
   </div>
+</div>
 
-</div><!-- /stage -->
+<!-- ═══ DETAIL MODAL ═══ -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
+</div>
 
-<div id="progress" style="width:0%"></div>
-<div id="slide-counter">01 / 08</div>
-<button id="skip-btn" onclick="nextSlide()">SIGUIENTE →</button>
+<script>
+// ═══ BASE DE DATOS ═══
+const DB=[
+{c:"H4-12V",d:"Foco H4 12V 60/55W transparente",p:35,s:20,cat:"Focos"},
+{c:"H4-HELLA",d:"Foco H4 Hella Standard",p:85,s:10,cat:"Focos"},
+{c:"H7-12V",d:"Foco H7 12V 55W",p:45,s:15,cat:"Focos"},
+{c:"H13-12V",d:"Foco H13 12V 60/55W",p:55,s:8,cat:"Focos"},
+{c:"H1-12V",d:"Foco H1 12V 55W",p:40,s:12,cat:"Focos"},
+{c:"H11-12V",d:"Foco H11 12V 55W",p:50,s:10,cat:"Focos"},
+{c:"9005-LED",d:"Foco 9005 LED alta intensidad",p:180,s:6,cat:"Focos"},
+{c:"9006-LED",d:"Foco 9006 LED alta intensidad",p:180,s:6,cat:"Focos"},
+{c:"LED-T10",d:"Foco LED T10 posición",p:25,s:30,cat:"Focos"},
+{c:"LED-1156",d:"Foco LED 1156 direccional",p:35,s:20,cat:"Focos"},
+{c:"LED-1157",d:"Foco LED 1157 freno",p:38,s:18,cat:"Focos"},
+{c:"REG-NIS-01",d:"Regulador voltaje Nissan Tsuru/Sentra",p:320,s:4,cat:"Reguladores"},
+{c:"REG-NIS-02",d:"Regulador voltaje Nissan Pick Up",p:350,s:3,cat:"Reguladores"},
+{c:"REG-FORD-01",d:"Regulador voltaje Ford Focus/Fiesta",p:380,s:3,cat:"Reguladores"},
+{c:"REG-GM-01",d:"Regulador voltaje GM Chevy/Corsa",p:290,s:5,cat:"Reguladores"},
+{c:"REG-VW-01",d:"Regulador voltaje VW Jetta/Golf Hitachi",p:420,s:2,cat:"Reguladores"},
+{c:"REG-TOY-01",d:"Regulador voltaje Toyota Corolla",p:350,s:3,cat:"Reguladores"},
+{c:"REG-HON-01",d:"Regulador voltaje Honda Civic",p:370,s:2,cat:"Reguladores"},
+{c:"BOB-CLX-01",d:"Bobina claxon universal 12V",p:85,s:8,cat:"Bobinas"},
+{c:"BOB-CLX-02",d:"Bobina claxon tipo caracol 12V",p:120,s:5,cat:"Bobinas"},
+{c:"BOB-IGN-NIS",d:"Bobina ignición Nissan Tsuru GA16DE",p:450,s:3,cat:"Bobinas"},
+{c:"BOB-IGN-VW",d:"Bobina ignición VW Jetta 2.0 individual",p:380,s:4,cat:"Bobinas"},
+{c:"BOB-IGN-GM",d:"Bobina ignición GM Chevy 1.6",p:320,s:5,cat:"Bobinas"},
+{c:"BOB-IGN-FORD",d:"Bobina ignición Ford Focus Zetec",p:480,s:2,cat:"Bobinas"},
+{c:"CLAXON-DISCO",d:"Claxon tipo disco universal 12V",p:95,s:6,cat:"Bobinas"},
+{c:"CLAXON-CORN",d:"Claxon corneta doble tono",p:180,s:4,cat:"Bobinas"},
+{c:"MOD-IGN-NIS",d:"Módulo ignición Nissan Tsuru",p:520,s:2,cat:"Bobinas"},
+{c:"BOMB-GAS-NIS",d:"Bomba gasolina Nissan Tsuru/Sentra",p:650,s:3,cat:"Bombas"},
+{c:"BOMB-GAS-VW",d:"Bomba gasolina VW Jetta A4 2.0",p:780,s:2,cat:"Bombas"},
+{c:"BOMB-GAS-GM",d:"Bomba gasolina GM Chevy módulo",p:850,s:2,cat:"Bombas"},
+{c:"BOMB-GAS-FORD",d:"Bomba gasolina Ford Fiesta/EcoSport",p:720,s:2,cat:"Bombas"},
+{c:"BOMB-GAS-TOY",d:"Bomba gasolina Toyota Corolla",p:800,s:2,cat:"Bombas"},
+{c:"BOMB-AGUA-UNI",d:"Bomba agua 12V lavador universal",p:85,s:10,cat:"Bombas"},
+{c:"BOMB-DIR-VW",d:"Bomba dirección hidráulica VW Jetta",p:1200,s:1,cat:"Bombas"},
+{c:"SEN-O2-NIS",d:"Sensor oxígeno Nissan 4 cables",p:280,s:4,cat:"Sensores"},
+{c:"SEN-O2-VW",d:"Sensor oxígeno VW Bosch universal",p:350,s:3,cat:"Sensores"},
+{c:"SEN-TPS-NIS",d:"Sensor TPS Nissan Tsuru/Sentra",p:220,s:5,cat:"Sensores"},
+{c:"SEN-CKP-NIS",d:"Sensor CKP Nissan cigüeñal",p:320,s:3,cat:"Sensores"},
+{c:"SEN-CKP-VW",d:"Sensor CKP VW Jetta/Golf",p:380,s:2,cat:"Sensores"},
+{c:"SEN-MAF-NIS",d:"Sensor MAF Nissan flujo aire",p:450,s:2,cat:"Sensores"},
+{c:"SEN-MAF-VW",d:"Sensor MAF VW Bosch",p:520,s:2,cat:"Sensores"},
+{c:"SEN-ECT-UNI",d:"Sensor temperatura refrigerante uni",p:120,s:8,cat:"Sensores"},
+{c:"SEN-IAT-UNI",d:"Sensor temperatura aire admisión",p:95,s:6,cat:"Sensores"},
+{c:"SEN-MAP-UNI",d:"Sensor MAP presión colector",p:180,s:4,cat:"Sensores"},
+{c:"SEN-VEL-NIS",d:"Sensor velocidad Nissan Tsuru",p:190,s:3,cat:"Sensores"},
+{c:"IAC-NIS",d:"Válvula IAC Nissan Tsuru ralentí",p:380,s:3,cat:"Sensores"},
+{c:"IAC-GM",d:"Válvula IAC GM Chevy ralentí",p:320,s:3,cat:"Sensores"},
+{c:"INY-NIS-01",d:"Inyector Nissan Tsuru GA16DE",p:280,s:4,cat:"Sensores"},
+{c:"INY-VW-01",d:"Inyector VW Jetta 2.0 Bosch",p:350,s:3,cat:"Sensores"},
+{c:"INY-GM-01",d:"Inyector GM Chevy 1.6 TBI",p:240,s:4,cat:"Sensores"},
+{c:"SF492",d:"Solenoide pared Acurat",p:195,s:5,cat:"Solenoides"},
+{c:"SOL-MARCH-NIS",d:"Solenoide marcha Nissan Tsuru",p:280,s:4,cat:"Solenoides"},
+{c:"SOL-MARCH-VW",d:"Solenoide marcha VW Jetta/Golf",p:350,s:3,cat:"Solenoides"},
+{c:"SOL-MARCH-GM",d:"Solenoide marcha GM Chevy",p:260,s:4,cat:"Solenoides"},
+{c:"SOL-MARCH-FORD",d:"Solenoide marcha Ford Focus",p:320,s:3,cat:"Solenoides"},
+{c:"MARCH-NIS",d:"Marcha reconstruida Nissan Tsuru",p:980,s:2,cat:"Solenoides"},
+{c:"MARCH-VW",d:"Marcha reconstruida VW Jetta",p:1350,s:1,cat:"Solenoides"},
+{c:"MARCH-GM",d:"Marcha reconstruida GM Chevy",p:850,s:2,cat:"Solenoides"},
+{c:"ALT-NIS-01",d:"Alternador reconstruido Nissan Tsuru",p:1200,s:2,cat:"Reguladores"},
+{c:"ALT-VW-01",d:"Alternador reconstruido VW Jetta A4",p:1500,s:1,cat:"Reguladores"},
+{c:"RELE-4P",d:"Relevador universal 4 pines 40A",p:35,s:25,cat:"Accesorios"},
+{c:"RELE-5P",d:"Relevador universal 5 pines 40A",p:40,s:20,cat:"Accesorios"},
+{c:"FUSIBLE-KIT",d:"Kit fusibles surtido 100 pzas",p:85,s:10,cat:"Accesorios"},
+{c:"TERM-KIT",d:"Kit terminales eléctricas surtido",p:65,s:8,cat:"Accesorios"},
+{c:"CINTA-ARN",d:"Cinta para arnés automotriz rollo",p:45,s:15,cat:"Accesorios"},
+{c:"CABLE-16",d:"Cable calibre 16 rollo 10m",p:55,s:10,cat:"Accesorios"},
+{c:"CABLE-14",d:"Cable calibre 14 rollo 10m",p:65,s:8,cat:"Accesorios"},
+{c:"CABLE-12",d:"Cable calibre 12 rollo 10m",p:80,s:8,cat:"Accesorios"},
+{c:"SWITCH-UNI",d:"Switch on/off iluminado 12V",p:25,s:20,cat:"Accesorios"},
+{c:"BUJIA-NIS",d:"Bujía Nissan Tsuru NGK",p:45,s:20,cat:"Accesorios"},
+{c:"BUJIA-VW",d:"Bujía VW Jetta Bosch platinum",p:65,s:15,cat:"Accesorios"},
+{c:"BUJIA-GM",d:"Bujía GM Chevy AC Delco",p:40,s:18,cat:"Accesorios"},
+{c:"CAB-BUJ-NIS",d:"Cables bujía Nissan Tsuru juego 4",p:280,s:3,cat:"Accesorios"},
+{c:"CAB-BUJ-VW",d:"Cables bujía VW Jetta juego 4",p:350,s:2,cat:"Accesorios"},
+{c:"TERMOST-NIS",d:"Termostato Nissan Tsuru 82°C",p:85,s:6,cat:"Accesorios"},
+{c:"TERMOST-VW",d:"Termostato VW Jetta 87°C",p:120,s:4,cat:"Accesorios"},
+{c:"TAPA-RAD",d:"Tapa radiador 1.1 bar universal",p:45,s:10,cat:"Accesorios"},
+{c:"A91020",d:"Antisulfatante caja 30 pzas",p:239.80,s:2,cat:"Accesorios"},
+];
 
-  <script>
-// ── PARTICLES ──
-const stage = document.getElementById('particles');
-for (let i = 0; i < 25; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 3 + 1;
-    p.style.cssText = `
-        width:${size}px;height:${size}px;
-        left:${Math.random() * 100}%;
-        background:${Math.random() > .7 ? '#F5A623' : '#00D4FF'};
-        opacity:${Math.random() * .4 + .1};
-        animation-duration:${8 + Math.random() * 12}s;
-        animation-delay:${Math.random() * 8}s;
-    `;
-    stage.appendChild(p);
+let PRODS=JSON.parse(localStorage.getItem('refac_db')||'null')||[...DB];
+let curCat='';
+let adminMode=false;
+const ICONS={Focos:'💡',Reguladores:'⚡',Bobinas:'🔌',Bombas:'🔋',Sensores:'📡',Solenoides:'⚙️',Accesorios:'🔧'};
+
+// ═══ SEARCH ═══
+function buscar(){
+  const q=document.getElementById('searchInp').value.toLowerCase().trim();
+  if(!q&&!curCat){document.getElementById('welcome').style.display='block';document.getElementById('pList').innerHTML='';return;}
+  document.getElementById('welcome').style.display='none';
+  let res=PRODS;
+  if(curCat) res=res.filter(p=>p.cat===curCat);
+  if(q) res=res.filter(p=>p.c.toLowerCase().includes(q)||p.d.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+  render(res,q||curCat);
+}
+function filterCat(cat,el){
+  curCat=cat;
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('act'));
+  el?.classList.add('act');
+  if(!cat&&!document.getElementById('searchInp').value.trim()){
+    document.getElementById('welcome').style.display='block';document.getElementById('pList').innerHTML='';return;
+  }
+  document.getElementById('welcome').style.display='none';
+  buscar();
+}
+function render(list,query){
+  const c=document.getElementById('pList');
+  if(!list.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txtD)"><div style="font-size:28px;margin-bottom:8px">🔍</div>No encontré "<b>'+query+'</b>"<br><br><a href="https://wa.me/527776838196?text=Hola%2C%20busco%20'+encodeURIComponent(query)+'" target="_blank" style="color:var(--green)">Preguntar por WhatsApp →</a></div>';return;}
+  c.innerHTML='<div class="p-count">'+list.length+' producto'+(list.length>1?'s':'')+'</div>'+list.map((p,i)=>{
+    const idx=PRODS.indexOf(p);
+    return '<div class="p-card" onclick="showDetail('+idx+')"><div class="p-ico '+p.cat.toLowerCase()+'">'+(ICONS[p.cat]||'📦')+'</div><div class="p-body"><div class="p-code">'+p.c+'</div><div class="p-name">'+p.d+'</div><div class="p-cat">'+p.cat+'</div></div><div class="p-right"><div class="p-price">$'+p.p.toLocaleString()+'</div><div class="p-stock'+(p.s<=2?' low':'')+'">'+p.s+' pzas</div></div></div>';
+  }).join('');
 }
 
-// ── SLIDE ENGINE PROPART V7 (CORREGIDO) ──
-const slides = document.querySelectorAll('.slide');
-let current = 0;
-let timer = null;
-const TIMING = [5000, 8000, 6000, 7000, 9000, 7000, 8000, 0];
+// ═══ DETAIL ═══
+function showDetail(idx){
+  const p=PRODS[idx];if(!p)return;
+  document.getElementById('modalBg').classList.add('show');
+  const m=document.getElementById('modalContent');
+  m.innerHTML='<div class="modal-head"><div class="p-ico '+p.cat.toLowerCase()+'" style="width:48px;height:48px;font-size:22px">'+(ICONS[p.cat]||'📦')+'</div><div><div style="font-family:Rajdhani,sans-serif;font-size:16px;font-weight:700;color:var(--gold)">'+p.d+'</div><div style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--cyan)">'+p.c+'</div></div><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="m-row"><span class="m-label">CATEGORÍA</span><span class="m-val">'+p.cat+'</span></div><div class="m-row"><span class="m-label">PRECIO</span><span class="m-val" style="font-family:Share Tech Mono,monospace;font-size:18px;color:var(--green)">$'+p.p.toLocaleString()+' MXN</span></div><div class="m-row"><span class="m-label">STOCK</span><span class="m-val'+(p.s<=2?' style="color:var(--red)"':'')+'">'+(p.s>0?p.s+' piezas disponibles':'⚠️ AGOTADO')+'</span></div><div class="m-btns"><button class="m-btn wa" onclick="window.open(\'https://wa.me/527776838196?text=\'+encodeURIComponent(\'Hola, me interesa: '+p.d+' ('+p.c+') $'+p.p+'\'))">📱 WhatsApp</button><button class="m-btn print" onclick="printTicket('+idx+')">🖨️ Ticket</button>'+(adminMode?'<button class="m-btn edit" onclick="editProd('+idx+')">✏️ Editar</button>':'')+'</div></div>';
+}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
 
-function showSlide(n) {
-    // 1. Limpiamos slides anteriores
-    slides.forEach(s => {
-        s.classList.remove('active', 'out');
-        s.style.display = 'none'; 
+// ═══ PRINT TICKET ═══
+function printTicket(idx){
+  const p=PRODS[idx];
+  const t='================================\n   REFACCIONARIA MILLAN\n   Partes Electricas\n================================\nFecha: '+new Date().toLocaleDateString('es-MX')+'\nHora:  '+new Date().toLocaleTimeString('es-MX')+'\n--------------------------------\nCodigo: '+p.c+'\n'+p.d+'\n\nPrecio:   $'+p.p.toFixed(2)+' MXN\nStock:    '+p.s+' pzas\n--------------------------------\nTel: 777-683-8196\n    221-956-7392\nAlpuyeca, Xochitepec, Morelos\n================================\n';
+  // Try Bluetooth ESC/POS
+  if(navigator.bluetooth){
+    alert('Ticket generado.\nPara conectar impresora térmica BT, configúrala en Android.\n\n'+t);
+  }else{
+    const w=window.open('','','width=300,height=400');
+    w.document.write('<pre style="font-family:monospace;font-size:12px">'+t+'</pre>');
+    w.document.close();w.print();
+  }
+}
+
+// ═══ VOICE ═══
+let recog=null,listening=false;
+function toggleVoice(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('voiceStatus').textContent='Usa Chrome para voz';return;}
+  if(listening){stopVoice();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recog=new SR();recog.lang='es-MX';recog.continuous=false;recog.interimResults=false;
+  recog.onstart=function(){listening=true;document.getElementById('voiceBtn').classList.add('on');document.getElementById('voiceStatus').textContent='🎤 Escuchando...';};
+  recog.onresult=function(e){const t=e.results[0][0].transcript;document.getElementById('searchInp').value=t;document.getElementById('voiceStatus').textContent='🎤 "'+t+'"';buscar();};
+  recog.onerror=recog.onend=function(){stopVoice();};
+  recog.start();
+}
+function stopVoice(){listening=false;document.getElementById('voiceBtn').classList.remove('on');if(recog)try{recog.stop();}catch(e){}setTimeout(()=>document.getElementById('voiceStatus').textContent='',3000);}
+
+// ═══ SCANNER ═══
+let scanStream=null;
+function openScanner(){
+  document.getElementById('scanOverlay').classList.add('show');
+  document.getElementById('scanResult').textContent='';
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(s=>{
+    scanStream=s;document.getElementById('scanVideo').srcObject=s;
+    // Simple barcode detection using BarcodeDetector API
+    if('BarcodeDetector' in window){
+      const det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','code_128','qr_code']});
+      const vid=document.getElementById('scanVideo');
+      const scanLoop=setInterval(async()=>{
+        if(!scanStream){clearInterval(scanLoop);return;}
+        try{
+          const codes=await det.detect(vid);
+          if(codes.length){
+            clearInterval(scanLoop);
+            const code=codes[0].rawValue;
+            document.getElementById('scanResult').textContent='✅ Código: '+code;
+            document.getElementById('searchInp').value=code;
+            setTimeout(()=>{closeScanner();buscar();},1000);
+          }
+        }catch(e){}
+      },500);
+    }else{
+      document.getElementById('scanResult').textContent='Tu navegador no soporta el escáner. Usa Chrome 83+';
+    }
+  }).catch(e=>{document.getElementById('scanResult').textContent='No se pudo acceder a la cámara';});
+}
+function closeScanner(){
+  document.getElementById('scanOverlay').classList.remove('show');
+  if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null;}
+}
+
+// ═══ CHARDS (Asistente Refaccionaria) ═══
+let chardsOpen=false;
+function tgChards(){chardsOpen=!chardsOpen;document.getElementById('chardsPanel').classList.toggle('show',chardsOpen);}
+function addChardsMsg(who,text){
+  const msgs=document.getElementById('chardsMsgs');
+  const d=document.createElement('div');
+  d.className=who==='user'?'msg-usr':'msg-bot';
+  d.textContent=text;msgs.appendChild(d);msgs.scrollTop=99999;
+}
+async function sendChards(){
+  const inp=document.getElementById('chardsInp');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  addChardsMsg('user',msg);
+  const ml=msg.toLowerCase();
+  // LOCAL: buscar en inventario
+  const matches=PRODS.filter(p=>ml.includes(p.c.toLowerCase())||p.d.toLowerCase().split(' ').some(w=>w.length>3&&ml.includes(w))||p.cat.toLowerCase().split(' ').some(w=>ml.includes(w)));
+  if(matches.length>0&&matches.length<=5){
+    let resp='¡Claro! Encontré esto:\n\n';
+    matches.forEach(p=>{resp+='🔧 '+p.d+' ('+p.c+')\n   💰 $'+p.p+' · 📦 '+p.s+' pzas\n\n';});
+    resp+='¿Le interesa alguno? Puedo mandar el detalle por WhatsApp.';
+    addChardsMsg('bot',resp);return;
+  }
+  if(matches.length>5){
+    addChardsMsg('bot','Encontré '+matches.length+' productos relacionados. ¿Me puede ser más específico? Por ejemplo: "bobina para Tsuru" o "foco H4".');return;
+  }
+  // Si no encuentra, intenta con API
+  try{
+    const inventario=PRODS.slice(0,30).map(p=>p.c+':'+p.d+' $'+p.p+' ('+p.s+' pzas)').join(' | ');
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,
+        system:'Eres Chards, asistente de ventas de Refaccionaria de Partes Eléctricas Millán en Alpuyeca, Morelos. Hablas en español mexicano amigable. Tu trabajo es ayudar a los clientes a encontrar autopartes eléctricas. INVENTARIO PARCIAL: '+inventario+'. Si no encuentras el producto exacto, sugiere contactar por WhatsApp al 777-683-8196. Sé breve (3-4 oraciones). Siempre cierra ofreciendo algo más.',
+        messages:[{role:'user',content:msg}]})
     });
-
-    // 2. Actualizamos el índice
-    current = n;
-    const currentSlide = slides[current];
-
-    // 3. Mostramos el nuevo slide con reflow para resetear animaciones CSS
-    currentSlide.style.display = 'flex';
-    currentSlide.offsetHeight; // Forzar reflow
-    currentSlide.classList.add('active');
-
-    // 4. Actualizar interfaz
-    document.getElementById('slide-counter').textContent = 
-        String(current + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
-    
-    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
-
-    // 5. Programar siguiente
-    scheduleNext();
+    const data=await res.json();
+    addChardsMsg('bot',data.content?.[0]?.text||'Disculpe, no pude consultar el sistema. ¿Gusta contactarnos por WhatsApp al 777-683-8196?');
+  }catch(e){
+    addChardsMsg('bot','No encontré "'+msg+'" en el inventario. Pero puede que lo tengamos en tienda. ¿Gusta que le pregunte al encargado por WhatsApp?\n\n📱 777-683-8196');
+  }
 }
 
-function nextSlide() {
-    let next = (current >= slides.length - 1) ? 0 : current + 1;
-    showSlide(next);
+// ═══ ADMIN ═══
+const ADMIN_PIN='7683';
+function requireAdmin(){
+  if(adminMode){showAdminMenu();return;}
+  const pin=prompt('🔒 PIN de Administrador:');
+  if(pin===ADMIN_PIN){adminMode=true;showAdminMenu();}
+  else if(pin!==null)alert('❌ PIN incorrecto');
 }
-
-function scheduleNext() {
-    clearTimeout(timer);
-    const t = TIMING[current];
-    if (t > 0) {
-        timer = setTimeout(nextSlide, t);
-    }
+function showAdminMenu(){
+  document.getElementById('modalBg').classList.add('show');
+  document.getElementById('modalContent').innerHTML='<div class="modal-head"><div style="font-size:24px">⚙️</div><div><div style="font-family:Rajdhani,sans-serif;font-size:16px;font-weight:700;color:var(--gold)">ADMINISTRADOR</div><div style="font-size:10px;color:var(--green)">'+PRODS.length+' productos</div></div><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="m-btns" style="flex-direction:column"><button class="m-btn" style="background:var(--green);color:#fff" onclick="addProdForm()">➕ Agregar Producto</button><button class="m-btn" style="background:var(--bg2);color:var(--cyan);border:1px solid var(--bdr)" onclick="filterCat(\'\',document.querySelector(\'.cat\'));closeModal()">📋 Ver Todo (toca para editar)</button><button class="m-btn" style="background:var(--bg2);color:var(--orange);border:1px solid var(--bdr)" onclick="exportCSV()">📤 Exportar CSV</button><button class="m-btn" style="background:var(--bg2);color:var(--txtD);border:1px solid var(--bdr)" onclick="adminMode=false;closeModal();alert(\'Modo admin desactivado\')">🔒 Cerrar sesión admin</button></div></div>';
 }
-
-// Iniciar en el slide 0 al cargar
-window.onload = () => showSlide(0);
-
-// ── KEYBOARD ──
-document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { 
-        nextSlide(); 
-    }
-    if (e.key === 'ArrowLeft' && current > 0) { 
-        showSlide(current - 1); 
-    }
-});
-
-// ── TOUCH ──
-let tx = 0;
-document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
-document.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 50) {
-        if (dx < 0) nextSlide();
-        else if (current > 0) showSlide(current - 1);
-    }
-});
-</scrip>
+function addProdForm(){
+  document.getElementById('modalContent').innerHTML='<div class="modal-head"><div style="font-size:24px">➕</div><div style="font-family:Rajdhani,sans-serif;font-size:16px;font-weight:700;color:var(--gold)">NUEVO PRODUCTO</div><button class="modal-close" onclick="closeModal()">✕</button></div><div class="admin-form"><div class="af-field"><label>CÓDIGO</label><input id="apC"></div><div class="af-field"><label>DESCRIPCIÓN</label><input id="apD"></div><div class="af-field"><label>PRECIO</label><input id="apP" type="number"></div><div class="af-field"><label>STOCK</label><input id="apS" type="number"></div><div class="af-field"><label>CATEGORÍA</label><select id="apCat"><option>Focos</option><option>Reguladores</option><option>Bobinas</option><option>Bombas</option><option>Sensores</option><option>Solenoides</option><option>Accesorios</option></select></div><button class="m-btn" style="background:var(--green);color:#fff;width:100%" onclick="saveProd()">💾 Guardar</button></div>';
+}
+function saveProd(){
+  const c=document.getElementById('apC').value.trim(),d=document.getElementById('apD').value.trim();
+  if(!c||!d){alert('Llena código y descripción');return;}
+  PRODS.push({c,d,p:parseFloat(document.getElementById('apP').value)||0,s:parseInt(document.getElementById('apS').value)||0,cat:document.getElementById('apCat').value});
+  localStorage.setItem('refac_db',JSON.stringify(PRODS));
+  alert('✅ '+c+' agregado');closeModal();
+}
+function editProd(idx){
+  const p=PRODS[idx];
+  document.getElementById('modalContent').innerHTML='<div class="modal-head"><div style="font-size:24px">✏️</div><div style="font-family:Rajdhani,sans-serif;font-size:16px;font-weight:700;color:var(--gold)">EDITAR: '+p.c+'</div><button class="modal-close" onclick="closeModal()">✕</button></div><div class="admin-form"><div class="af-field"><label>CÓDIGO</label><input id="epC" value="'+p.c+'"></div><div class="af-field"><label>DESCRIPCIÓN</label><input id="epD" value="'+p.d+'"></div><div class="af-field"><label>PRECIO</label><input id="epP" type="number" value="'+p.p+'"></div><div class="af-field"><label>STOCK</label><input id="epS" type="number" value="'+p.s+'"></div><div class="af-field"><label>CATEGORÍA</label><select id="epCat">'+['Focos','Reguladores','Bobinas','Bombas','Sensores','Solenoides','Accesorios'].map(c=>'<option'+(c===p.cat?' selected':'')+'>'+c+'</option>').join('')+'</select></div><div style="display:flex;gap:8px"><button class="m-btn" style="background:var(--green);color:#fff;flex:1" onclick="saveEditProd('+idx+')">💾 Guardar</button><button class="m-btn" style="background:var(--red);color:#fff;flex:1" onclick="delProd('+idx+')">🗑️ Eliminar</button></div></div>';
+  document.getElementById('modalBg').classList.add('show');
+}
+function saveEditProd(i){PRODS[i]={c:document.getElementById('epC').value,d:document.getElementById('epD').value,p:parseFloat(document.getElementById('epP').value)||0,s:parseInt(document.getElementById('epS').value)||0,cat:document.getElementById('epCat').value};localStorage.setItem('refac_db',JSON.stringify(PRODS));alert('✅ Actualizado');closeModal();buscar();}
+function delProd(i){if(!confirm('¿Eliminar '+PRODS[i].c+'?'))return;PRODS.splice(i,1);localStorage.setItem('refac_db',JSON.stringify(PRODS));alert('Eliminado');closeModal();buscar();}
+function exportCSV(){let csv='Codigo,Descripcion,Precio,Stock,Categoria\n';PRODS.forEach(p=>csv+=p.c+',"'+p.d+'",'+p.p+','+p.s+','+p.cat+'\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='Refaccionaria_'+new Date().toISOString().slice(0,10)+'.csv';a.click();}
+</script>
 </body>
 </html>
